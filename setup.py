@@ -23,10 +23,10 @@ def version(package, encoding='utf-8'):
 
     See <https://packaging.python.org/en/latest/single_source_version.html>.
     """
-    path = os.path.join(os.path.dirname(__file__), package, '__init__.py')
+    path = os.path.join(os.path.dirname(__file__), package, 'version.py')
     with io.open(path, encoding=encoding) as fp:
         version_info = fp.read()
-    version_match = re.search(r"""^__version__ = ['"]([^'"]*)['"]""",
+    version_match = re.search(r"""^version = ['"]([^'"]*)['"]""",
                               version_info, re.M)
     if not version_match:
         raise RuntimeError("Unable to find version string.")
