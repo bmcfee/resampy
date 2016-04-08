@@ -48,8 +48,9 @@ def resample(x, sr_orig, sr_new, num_zeros=13, precision=9, window=None, axis=-1
     interp_delta = np.zeros_like(interp_win)
     interp_delta[:-1] = np.diff(interp_win)
 
-    resample_f(x.swapaxes(0, axis),
-               y.swapaxes(0, axis),
-               sample_ratio, interp_win, interp_delta, num_table)
+    # Construct 2d views of the data with the resampling axis on the first dimension
+    x_2d = x.swapaxes(0, axis).reshape((x.shape[axis], -1))
+    y_2d = y.swapaxes(0, axis).reshape((y.shape[axis], -1))
+    resample_f(x_2d, y_2d, sample_ratio, interp_win, interp_delta, num_table)
 
     return y
