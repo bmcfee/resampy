@@ -12,65 +12,63 @@ cpdef void resample_f(float[:, :] x, float[:, :] y,
                       float[:] interp_win, float[:] interp_delta, int num_table) nogil:
     
     cdef:
-        double SCALE = min(1.0, sample_ratio)
-        double TIME_INC = 1./sample_ratio
-    
-        int STEP = int(SCALE * num_table)
-    
+        double scale = min(1.0, sample_ratio)
+        double time_increment = 1./sample_ratio
+        int index_step = int(scale * num_table)
         double time_register = 0.0
     
         int n = 0
-        double P = 0.0
-        double PL = 0.0
+        double frac = 0.0
+        double index_frac = 0.0
         int offset = 0
         double eta = 0.0
-        int t, i
+        double weight = 0.0
     
         int nwin = interp_win.shape[0]
         int n_orig = x.shape[0]
         int n_out = y.shape[0]
         int n_channels = y.shape[1]
-        
-        double weight = 0.0
+
+        int t, i, j
 
     for t in range(n_out):
         # Grab the top bits as an index to the input buffer
         n = int(time_register)
         
         # Grab the fractional component of the time index
-        P = SCALE * (time_register - n)
+        frac = scale * (time_register - n)
         
         # Offset into the filter
-        PL = P * num_table
-        offset = int(PL)
+        index_frac = frac * num_table
+        offset = int(index_frac)
         
         # Interpolation factor
-        eta = PL - offset
+        eta = index_frac - offset
         
         # Compute the left wing of the filter response
-        for i in range(min(n + 1, (nwin - offset) // STEP)):
+        for i in range(min(n + 1, (nwin - offset) // index_step)):
 
-            weight = (interp_win[offset + i * STEP] + eta * interp_delta[offset + i * STEP])
+            weight = (interp_win[offset + i * index_step] + eta * interp_delta[offset + i * index_step])
             for j in range(n_channels):
                 y[t, j] += weight * x[n - i, j]
         
         # Invert P
-        P = SCALE - P
+        frac = scale - frac
 
         # Offset into the filter
-        PL = P * num_table
-        offset = int(PL)
+        index_frac = frac * num_table
+        offset = int(index_frac)
         
         # Interpolation factor
-        eta = PL - offset
+        eta = index_frac - offset
         
         # Compute the right wing of the filter response
-        for i in range(min(n_orig - i - n + 1, (nwin - offset)//STEP)):
-            weight = (interp_win[offset + i * STEP] + eta * interp_delta[offset + i * STEP])
+        for i in range(min(n_orig - i - n + 1, (nwin - offset)//index_step)):
+            weight = (interp_win[offset + i * index_step] + eta * interp_delta[offset + i * index_step])
             for j in range(n_channels):
-                y[t, j] += x[n + i + 1, j]
+                y[t, j] += weight * x[n + i + 1, j]
 
         # Increment the time register
-        time_register += TIME_INC
+        time_register += time_increment
     pass
 

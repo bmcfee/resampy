@@ -26,7 +26,7 @@ def make_window(num_zeros, num_table, window, sr_orig, sr_new, rolloff=0.95):
     return interp_win
 
 
-def resample(x, sr_orig, sr_new, num_zeros=13, precision=9, window=None, axis=-1):
+def resample(x, sr_orig, sr_new, num_zeros=31, precision=9, window=None, axis=-1):
     '''Resample a signal x
     '''
     if window is None:
