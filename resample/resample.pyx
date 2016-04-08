@@ -7,8 +7,8 @@ cimport numpy as cnp
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def resample_f(float[:] x, float[:] y, double sample_ratio,
-               float[:] interp_win, float[:] interp_delta, int num_table):
+cpdef void resample_f(float[:] x, float[:] y, double sample_ratio,
+               float[:] interp_win, float[:] interp_delta, int num_table) nogil:
     
     cdef double SCALE = min(1.0, sample_ratio)
     cdef double TIME_INC = 1./sample_ratio
@@ -17,7 +17,6 @@ def resample_f(float[:] x, float[:] y, double sample_ratio,
     
     cdef double time_register = 0.0
     
-    cdef int n_orig = len(x)
     cdef int n = 0
     cdef double P = 0.0
     cdef double PL = 0.0
@@ -25,9 +24,11 @@ def resample_f(float[:] x, float[:] y, double sample_ratio,
     cdef double eta = 0.0
     cdef int t, i
     
-    cdef int nwin = len(interp_win)
+    cdef int nwin = interp_win.shape[0]
+    cdef int n_orig = x.shape[0]
+    cdef int n_out = y.shape[0]
     
-    for t in range(len(y)):
+    for t in range(n_out):
         # Grab the top bits as an index to the input buffer
         n = int(time_register)
         
