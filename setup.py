@@ -90,10 +90,10 @@ def setup_package():
               license=LICENSE,
               configuration=configuration,
               classifiers=[
-                'Development Status :: 4 - Beta',
+                'Development Status :: 3 - Alpha',
                 'Environment :: Console',
                 'Intended Audience :: Science/Research',
-                'License :: OSI Approved :: ISC License',
+                'License :: OSI Approved :: ISC License (ISCL)',
                 'Natural Language :: English',
                 'Programming Language :: Python :: 2.7',
                 'Programming Language :: Python :: 3.4',
