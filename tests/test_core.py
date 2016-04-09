@@ -47,6 +47,19 @@ def test_bad_rolloff():
     yield __test, 1.5
 
 
+@raises(ValueError)
+def test_bad_precision():
+
+    x = np.zeros(100)
+    resampy.resample(x, 100, 50, precision=-1)
+    
+
+@raises(ValueError)
+def test_bad_num_zeros():
+
+    x = np.zeros(100)
+    resampy.resample(x, 100, 50, num_zeros=0)
+
 def test_dtype():
 
     def __test(dtype):

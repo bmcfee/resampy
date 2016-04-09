@@ -125,6 +125,12 @@ def resample(x, sr_orig, sr_new, num_zeros=69, precision=9, window=None, rolloff
     if not 0 < rolloff <= 1:
         raise ValueError('Invalid roll-off: rolloff={}'.format(rolloff))
 
+    if num_zeros < 1:
+        raise ValueError('Invalid num_zeros: num_zeros={}'.format(num_zeros))
+
+    if precision < 1:
+        raise ValueError('Invalid precision: precision={}'.format(precision))
+
     sample_ratio = float(sr_new) / sr_orig
 
     # Set up the output shape
