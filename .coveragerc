@@ -1,0 +1,4 @@
+[run]
+omit =
+    resampy/setup.py
+    resampy/__check_build/*
