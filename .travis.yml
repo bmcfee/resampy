@@ -3,10 +3,18 @@ language: python
 # sudo false implies containerized builds
 sudo: false
 
+
+notifications:
+    email: false
+
 python:
   - 2.7
   - 3.4
   - 3.5
+
+cache:
+    directories:
+    - $HOME/miniconda
 
 env:
   global:
@@ -24,10 +32,14 @@ before_install:
 - conda update conda
 - conda info -a
 - conda install python=$TRAVIS_PYTHON_VERSION $CONDA_DEPS
+- pip install python-coveralls
 
 install:
     - pip install -e .
 
 script:
-    - cd tests/
-    - nosetests -v
+    - nosetests -v -w tests/ --with-coverage --cover-erase --cover-package=resampy
+
+after_success:
+    - coveralls
+
