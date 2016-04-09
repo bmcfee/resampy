@@ -12,7 +12,7 @@ from cython cimport floating
 @cython.wraparound(False)
 cpdef void resample_f(floating[:, :] x, floating[:, :] y, 
                       double sample_ratio,
-                      floating[:] interp_win, floating[:] interp_delta, int num_table) nogil:
+                      double[:] interp_win, double[:] interp_delta, int num_table) nogil:
     
     cdef:
         double scale = min(1.0, sample_ratio)

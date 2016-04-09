@@ -34,7 +34,6 @@ def test_bad_sr():
     yield raises(ValueError)(resampy.resample), x, -1, 100
 
 
-
 def test_bad_rolloff():
 
     @raises(ValueError)
@@ -45,3 +44,16 @@ def test_bad_rolloff():
     
     yield __test, -1
     yield __test, 1.5
+
+
+def test_dtype():
+
+    def __test(dtype):
+        x = np.random.randn(100).astype(dtype)
+
+        y = resampy.resample(x, 100, 200)
+
+        eq_(x.dtype, y.dtype)
+
+    yield __test, np.float32
+    yield __test, np.float64
