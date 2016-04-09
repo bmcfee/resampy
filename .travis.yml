@@ -30,4 +30,4 @@ install:
 
 script:
     - cd tests/
-    - nosetests -v cython_template
+    - nosetests -v
