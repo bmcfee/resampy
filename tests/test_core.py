@@ -2,6 +2,7 @@
 # -*- encoding: utf-8 -*-
 
 import numpy as np
+import scipy.signal
 import resampy
 
 from nose.tools import eq_, raises
@@ -57,3 +58,22 @@ def test_dtype():
 
     yield __test, np.float32
     yield __test, np.float64
+
+
+@raises(TypeError)
+def test_bad_window():
+
+    x = np.zeros(100)
+
+    resampy.resample(x, 100, 200, window=np.ones(50))
+
+
+def test_good_window():
+
+    sr_orig = 100
+    sr_new = 200
+    x = np.random.randn(500)
+
+    y = resampy.resample(x, sr_orig, sr_new, window=scipy.signal.blackman)
+
+    eq_(len(y), 2 * len(x))
