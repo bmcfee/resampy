@@ -89,9 +89,6 @@ def setup_package():
               version=version(PACKAGE_NAME),
               license=LICENSE,
               configuration=configuration,
-              install_requires=['numpy >= 1.10',
-                                'scipy >= 0.13',
-                                'six >= 1.3'],
               classifiers=[
                 'Development Status :: 3 - Alpha',
                 'Environment :: Console',
