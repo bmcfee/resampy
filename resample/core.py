@@ -12,7 +12,33 @@ __all__ = ['resample']
 
 
 def make_window(num_zeros, num_table, window, sr_orig, sr_new, rolloff=0.95):
-    '''Construct the interpolation window'''
+    '''Construct the interpolation window
+    
+    Parameters
+    ----------
+    num_zeros : int > 0
+        The number of zero-crossings to retain in the sinc filter
+
+    num_table : int > 0
+        The number of filter coefficients to retain for each zero-crossing
+
+    window : callable
+        The window function
+
+    sr_orig : int > 0
+        The original sampling rate
+
+    sr_new : int > 0
+        The target sampling rate
+
+    rolloff : float > 0
+        The roll-off frequency (as a fraction of nyquist)
+
+    Returns
+    -------
+    interp_window: np.ndarray [shape=(num_zeros * num_table + 1)]
+        The interpolation window (right-hand side)
+    '''
 
     # Generate the right-wing of the sinc
     scale = min(sr_orig, sr_new) / float(sr_orig)
@@ -69,11 +95,19 @@ def resample(x, sr_orig, sr_new, num_zeros=31, precision=9, window=None, axis=-1
     TypeError
         if `window` is not callable or `None`
 
+    ValueError
+        if `sr_orig` or `sr_new` is not positive
     '''
     if window is None:
         window = scipy.signal.blackmanharris
     elif not six.callable(window):
         raise TypeError('window must be callable, not type(window)={}'.format(type(window)))
+
+    if sr_orig <= 0:
+        raise ValueError('Invalid sample rate: sr_orig={}'.format(sr_orig))
+
+    if sr_new <= 0:
+        raise ValueError('Invalid sample rate: sr_new={}'.format(sr_new))
 
     sample_ratio = float(sr_new) / sr_orig
 
