@@ -11,7 +11,7 @@ Function reference
     resample
 '''
 
-import scipy
+import scipy.signal
 import numpy as np
 import six
 
