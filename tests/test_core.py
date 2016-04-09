@@ -23,3 +23,25 @@ def test_shape():
 
     for axis in [0, 1, 2]:
         yield __test, axis, sr_orig, sr_orig // 2, X
+
+
+def test_bad_sr():
+
+    x = np.zeros(100)
+    yield raises(ValueError)(resampy.resample), x, 100, 0
+    yield raises(ValueError)(resampy.resample), x, 100, -1
+    yield raises(ValueError)(resampy.resample), x, 0, 100
+    yield raises(ValueError)(resampy.resample), x, -1, 100
+
+
+
+def test_bad_rolloff():
+
+    @raises(ValueError)
+    def __test(rolloff):
+
+        x = np.zeros(100)
+        resampy.resample(x, 100, 50, rolloff=rolloff)
+    
+    yield __test, -1
+    yield __test, 1.5
