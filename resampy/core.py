@@ -1,6 +1,15 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-'''Core resampling interface'''
+'''Core resampling interface
+
+Function reference
+------------------
+
+.. autosummary::
+    :toctree: generated/
+
+    resample
+'''
 
 import scipy
 import numpy as np

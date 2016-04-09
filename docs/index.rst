@@ -3,15 +3,25 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to resampy's documentation!
-===================================
-
-Contents:
+API Reference
+=============
 
 .. toctree::
    :maxdepth: 2
 
+   api
 
+Changes
+=======
+.. toctree::
+   :maxdepth: 2
+
+   changes
+
+Contribute
+==========
+- `Issue Tracker <http://github.com/bmcfee/resampy/issues>`_
+- `Source Code <http://github.com/bmcfee/resampy>`_
 
 Indices and tables
 ==================
