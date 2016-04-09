@@ -32,9 +32,10 @@ before_install:
 - conda update conda
 - conda info -a
 - conda install python=$TRAVIS_PYTHON_VERSION $CONDA_DEPS
-- pip install python-coveralls
 
 install:
+    - pip install python-coveralls
+    - pip install -r requirements.txt
     - pip install -e .
 
 script:
