@@ -64,7 +64,7 @@ def make_window(num_zeros, num_table, window, sr_orig, sr_new, rolloff):
     return interp_win
 
 
-def resample(x, sr_orig, sr_new, num_zeros=31, precision=9, window=None, rolloff=0.95, axis=-1):
+def resample(x, sr_orig, sr_new, num_zeros=69, precision=9, window=None, rolloff=0.95, axis=-1):
     '''Resample a signal x
 
     Parameters
@@ -87,7 +87,7 @@ def resample(x, sr_orig, sr_new, num_zeros=31, precision=9, window=None, rolloff
 
     window : callable or None
         A window function to taper the low-pass filter.
-        By default, uses `scipy.signal.blackmanharris`.
+        By default, uses `scipy.signal.hann`.
 
         .. seealso:: scipy.signal
 
@@ -111,7 +111,8 @@ def resample(x, sr_orig, sr_new, num_zeros=31, precision=9, window=None, rolloff
         if `sr_orig` or `sr_new` is not positive
     '''
     if window is None:
-        window = scipy.signal.blackmanharris
+        window = scipy.signal.hann
+
     elif not six.callable(window):
         raise TypeError('window must be callable, not type(window)={}'.format(type(window)))
 
