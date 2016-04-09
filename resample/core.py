@@ -11,7 +11,7 @@ from .resample import resample_f
 __all__ = ['resample']
 
 
-def make_window(num_zeros, num_table, window, sr_orig, sr_new, rolloff=0.95):
+def make_window(num_zeros, num_table, window, sr_orig, sr_new, rolloff):
     '''Construct the interpolation window
     
     Parameters
@@ -55,7 +55,7 @@ def make_window(num_zeros, num_table, window, sr_orig, sr_new, rolloff=0.95):
     return interp_win
 
 
-def resample(x, sr_orig, sr_new, num_zeros=31, precision=9, window=None, axis=-1):
+def resample(x, sr_orig, sr_new, num_zeros=31, precision=9, window=None, rolloff=0.95, axis=-1):
     '''Resample a signal x
 
     Parameters
@@ -81,6 +81,9 @@ def resample(x, sr_orig, sr_new, num_zeros=31, precision=9, window=None, axis=-1
         By default, uses `scipy.signal.blackmanharris`.
 
         .. seealso:: scipy.signal
+
+    rolloff : float in (0, 1]
+        The roll-off frequency as a fraction of nyquist
 
     axis : int
         The target axis along which to resample `x`
@@ -109,6 +112,9 @@ def resample(x, sr_orig, sr_new, num_zeros=31, precision=9, window=None, axis=-1
     if sr_new <= 0:
         raise ValueError('Invalid sample rate: sr_new={}'.format(sr_new))
 
+    if not 0 < rolloff <= 1:
+        raise ValueError('Invalid roll-off: rolloff={}'.format(rolloff))
+
     sample_ratio = float(sr_new) / sr_orig
 
     # Set up the output shape
@@ -118,7 +124,7 @@ def resample(x, sr_orig, sr_new, num_zeros=31, precision=9, window=None, axis=-1
     y = np.zeros(shape, dtype=np.float32)
 
     num_table = 2**precision
-    interp_win = make_window(num_zeros, num_table, window, sr_orig, sr_new)
+    interp_win = make_window(num_zeros, num_table, window, sr_orig, sr_new, rolloff)
 
     interp_delta = np.zeros_like(interp_win)
     interp_delta[:-1] = np.diff(interp_win)
