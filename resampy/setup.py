@@ -1,6 +1,6 @@
 import os
 
-PACKAGE_NAME = 'resample'
+PACKAGE_NAME = 'resampy'
 
 
 def configuration(parent_package='', top_path=None):

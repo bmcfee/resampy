@@ -1,4 +1,4 @@
-# Setup script for resample
+# Setup script for resampy
 # Adapted from cython template setup.py script (BSD-licensed)
 
 import io
@@ -8,13 +8,13 @@ import sys
 import subprocess
 
 
-PACKAGE_NAME = 'resample'
-DESCRIPTION = "resample: Efficient signal resampling"
+PACKAGE_NAME = 'resampy'
+DESCRIPTION = "resampy: Efficient signal resampling"
 LONG_DESCRIPTION = DESCRIPTION
 AUTHOR = "Brian McFee"
 AUTHOR_EMAIL = "brian.mcfee@nyu.edu"
-URL = 'https://github.com/bmcfee/resample'
-DOWNLOAD_URL = 'https://github.com/bmcfee/resample'
+URL = 'https://github.com/bmcfee/resampy'
+DOWNLOAD_URL = 'https://github.com/bmcfee/resampy'
 LICENSE = 'ISC'
 
 
