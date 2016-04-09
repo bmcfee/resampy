@@ -4,12 +4,15 @@ import cython
 import numpy as np
 cimport numpy as cnp
 
+from cython import floating
+from cython cimport floating
+
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cpdef void resample_f(float[:, :] x, float[:, :] y, 
+cpdef void resample_f(floating[:, :] x, floating[:, :] y, 
                       double sample_ratio,
-                      float[:] interp_win, float[:] interp_delta, int num_table) nogil:
+                      floating[:] interp_win, floating[:] interp_delta, int num_table) nogil:
     
     cdef:
         double scale = min(1.0, sample_ratio)
