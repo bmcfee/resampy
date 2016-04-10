@@ -61,7 +61,7 @@ class Mock(MagicMock):
     def __getattr__(cls, name):
             return Mock()
 
-MOCK_MODULES = ['numpy', 'scipy']
+MOCK_MODULES = ['numpy', 'scipy', 'scipy.signal']
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 # The version info for the project you're documenting, acts as replacement for
