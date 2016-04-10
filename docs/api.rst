@@ -2,4 +2,5 @@
 
 .. module:: resampy
 
-.. automodule:: core
+.. automodule:: resampy.core
+    :members:
