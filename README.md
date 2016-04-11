@@ -7,5 +7,8 @@
 
 Efficient audio resampling in Python / Cython.
 
-This package implements the band-limited sinc interpolation method for sampling rate conversion as described by
-[Julius O. Smith III](https://ccrma.stanford.edu/~jos/resample/resample.html).
+This package implements the band-limited sinc interpolation method for sampling rate conversion as described by:
+> Smith, Julius O. Digital Audio Resampling Home Page
+> Center for Computer Research in Music and Acoustics (CCRMA), 
+> Stanford University, 2015-02-23.
+> Web published at [http://www-ccrma.stanford.edu/~jos/resample/](http://www-ccrma.stanford.edu/~jos/resample/).
