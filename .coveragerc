@@ -1,4 +1,5 @@
 [run]
+plugins = Cython.Coverage
 omit =
     resampy/setup.py
     resampy/__check_build/*

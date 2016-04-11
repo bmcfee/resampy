@@ -1,3 +1,5 @@
+# cython: linetrace=True
+# distutils: define_macros=CYTHON_TRACE_NOGIL=1
 '''Cython implementation of resampler'''
 
 import cython
