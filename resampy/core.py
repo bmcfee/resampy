@@ -11,7 +11,7 @@ from .resample import resample_f
 __all__ = ['resample']
 
 
-def make_window(num_zeros, num_table, window, sr_orig, sr_new, rolloff):
+def make_window(num_zeros, num_table, window, rolloff):
     '''Construct the interpolation window
     
     Parameters
@@ -25,12 +25,6 @@ def make_window(num_zeros, num_table, window, sr_orig, sr_new, rolloff):
     window : callable
         The window function
 
-    sr_orig : int > 0
-        The original sampling rate
-
-    sr_new : int > 0
-        The target sampling rate
-
     rolloff : float > 0
         The roll-off frequency (as a fraction of nyquist)
 
@@ -41,14 +35,12 @@ def make_window(num_zeros, num_table, window, sr_orig, sr_new, rolloff):
     '''
 
     # Generate the right-wing of the sinc
-    scale = min(sr_orig, sr_new) / float(sr_orig)
-
     n = num_table * num_zeros
     sinc_win = rolloff * np.sinc(rolloff * np.linspace(0, num_zeros, num=n + 1,
                                                        endpoint=True))
 
     # Build the window function and cut off the left half
-    taper = scale * window(2 * n + 1)[n:]
+    taper = window(2 * n + 1)[n:]
 
     interp_win = (taper * sinc_win)
 
@@ -131,7 +123,7 @@ def resample(x, sr_orig, sr_new, num_zeros=69, precision=9, window=None, rolloff
     y = np.zeros(shape, dtype=x.dtype)
 
     num_table = 2**precision
-    interp_win = make_window(num_zeros, num_table, window, sr_orig, sr_new, rolloff)
+    interp_win = min(sample_ratio, 1.0) * make_window(num_zeros, num_table, window, rolloff)
 
     interp_delta = np.zeros_like(interp_win)
     interp_delta[:-1] = np.diff(interp_win)
