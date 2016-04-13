@@ -12,7 +12,7 @@ FILTER_FUNCTIONS = ['sinc_window']
 __all__ = ['get_filter'] + FILTER_FUNCTIONS
 
 
-def sinc_window(num_zeros=69, precision=9, window=None, rolloff=0.95):
+def sinc_window(num_zeros=64, precision=9, window=None, rolloff=0.945):
     '''Construct a windowed sinc interpolation filter
 
     Parameters
@@ -24,7 +24,7 @@ def sinc_window(num_zeros=69, precision=9, window=None, rolloff=0.95):
         The number of filter coefficients to retain for each zero-crossing
 
     window : callable
-        The window function
+        The window function.  By default, uses Blackman-Harris.
 
     rolloff : float > 0
         The roll-off frequency (as a fraction of nyquist)
@@ -48,7 +48,7 @@ def sinc_window(num_zeros=69, precision=9, window=None, rolloff=0.95):
     '''
 
     if window is None:
-        window = scipy.signal.hann
+        window = scipy.signal.blackmanharris
     elif not six.callable(window):
         raise TypeError('window must be callable, not type(window)={}'.format(type(window)))
 
