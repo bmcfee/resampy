@@ -9,6 +9,8 @@ import sys
 
 FILTER_FUNCTIONS = ['sinc_window']
 
+__all__ = ['get_filter'] + FILTER_FUNCTIONS
+
 
 def sinc_window(num_zeros=69, precision=9, window=None, rolloff=0.95):
     '''Construct a windowed sinc interpolation filter
@@ -79,7 +81,26 @@ def get_filter(name_or_function, **kwargs):
     Parameters
     ----------
     name_or_function : str or callable
-        If a string
+        If a function, returns `name_or_function(**kwargs)`.
+
+        If a string, and it matches the name of one of the defined
+        filter functions, the corresponding function is called with **kwargs.
+
+        If a string, and it matches the name of a pre-computed filter,
+        the corresponding filter is retrieved, and kwargs is ignored.
+
+    Returns
+    -------
+    half_window : np.ndarray
+        The right wing of the interpolation filter
+
+    precision : int > 0
+        The number of samples between zero-crossings of the filter
+
+    Raises
+    ------
+    NotImplementedError
+        If `name_or_function` cannot be found as a filter.
     '''
     if name_or_function in FILTER_FUNCTIONS:
         return getattr(sys.modules[__name__], name_or_function)(**kwargs)
