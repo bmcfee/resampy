@@ -58,7 +58,7 @@ def sinc_window(num_zeros=64, precision=9, window=None, rolloff=0.945):
     if num_zeros < 1:
         raise ValueError('Invalid num_zeros: num_zeros={}'.format(num_zeros))
 
-    if precision < 1:
+    if precision < 0:
         raise ValueError('Invalid precision: precision={}'.format(precision))
 
     # Generate the right-wing of the sinc
