@@ -37,6 +37,9 @@ def test_filter_sinc():
                         yield __test, filt, window, num_zeros, precision, rolloff
 
 
+def test_filter_load():
+    half_win, precision = resampy.filters.get_filter('kaiser_best')
+
 @raises(NotImplementedError)
 def test_filter_missing():
     resampy.filters.get_filter('bad name')
