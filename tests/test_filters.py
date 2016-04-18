@@ -40,6 +40,6 @@ def test_filter_sinc():
 def test_filter_load():
     half_win, precision = resampy.filters.get_filter('kaiser_best')
 
-@raises(NotImplementedError)
+@raises(IOError)
 def test_filter_missing():
     resampy.filters.get_filter('bad name')
