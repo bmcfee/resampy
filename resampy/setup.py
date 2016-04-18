@@ -9,6 +9,7 @@ def configuration(parent_package='', top_path=None):
     config = Configuration(PACKAGE_NAME, parent_package, top_path)
 
     config.add_subpackage('__check_build')
+    config.add_data_dir('data')
     config.add_extension('resample',
                          sources=['resample.c'])
 
