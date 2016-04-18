@@ -4,6 +4,8 @@
 
 import scipy.signal
 import numpy as np
+import os
+import pkg_resources
 import six
 import sys
 
@@ -107,5 +109,29 @@ def get_filter(name_or_function, **kwargs):
     elif six.callable(name_or_function):
         return name_or_function(**kwargs)
     else:
-        # TODO: load pre-computed filter from disk
-        raise NotImplementedError(name_or_function)
+        return load_filter(name_or_function)
+
+
+def load_filter(filter_name):
+    '''Retrieve a pre-computed filter.
+
+    Parameters
+    ----------
+    filter_name : str
+        The key of the filter, e.g., 'kaiser_fast'
+
+    Returns
+    -------
+    half_window : np.ndarray
+        The right wing of the interpolation filter
+
+    precision : int > 0
+        The number of samples between zero-crossings of the fitler
+    '''
+
+    fname = os.path.join('data',
+                         os.path.extsep.join([filter_name, 'npz']))
+
+    data = np.load(pkg_resources.resource_filename(__name__, fname))
+
+    return data['half_window'], data['precision']
