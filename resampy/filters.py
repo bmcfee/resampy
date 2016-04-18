@@ -109,7 +109,11 @@ def get_filter(name_or_function, **kwargs):
     elif six.callable(name_or_function):
         return name_or_function(**kwargs)
     else:
-        return load_filter(name_or_function)
+        try:
+            return load_filter(name_or_function)
+        except (IOError, ValueError):
+            raise NotImplementedError('Cannot load filter definition for '
+                                      '{}'.format(name_or_function))
 
 
 def load_filter(filter_name):
