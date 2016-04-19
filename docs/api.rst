@@ -4,3 +4,7 @@
 
 .. automodule:: core
     :members:
+
+.. automodule:: filters
+    :members:
+

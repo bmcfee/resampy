@@ -59,7 +59,7 @@ from mock import MagicMock
 class Mock(MagicMock):
     @classmethod
     def __getattr__(cls, name):
-            return Mock()
+        return Mock()
 
 MOCK_MODULES = ['numpy', 'scipy', 'scipy.signal']
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
