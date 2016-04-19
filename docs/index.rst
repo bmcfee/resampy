@@ -5,6 +5,10 @@
 
 Examples
 --------
+.. toctree::
+    :maxdepth: 3
+
+    example
 
 API Reference
 =============
