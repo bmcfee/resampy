@@ -41,7 +41,7 @@ def test_bad_rolloff():
     def __test(rolloff):
 
         x = np.zeros(100)
-        resampy.resample(x, 100, 50, rolloff=rolloff)
+        resampy.resample(x, 100, 50, filter='sinc_window', rolloff=rolloff)
     
     yield __test, -1
     yield __test, 1.5
@@ -51,14 +51,14 @@ def test_bad_rolloff():
 def test_bad_precision():
 
     x = np.zeros(100)
-    resampy.resample(x, 100, 50, precision=-1)
+    resampy.resample(x, 100, 50, filter='sinc_window', precision=-1)
     
 
 @raises(ValueError)
 def test_bad_num_zeros():
 
     x = np.zeros(100)
-    resampy.resample(x, 100, 50, num_zeros=0)
+    resampy.resample(x, 100, 50, filter='sinc_window', num_zeros=0)
 
 def test_dtype():
 
@@ -78,7 +78,7 @@ def test_bad_window():
 
     x = np.zeros(100)
 
-    resampy.resample(x, 100, 200, window=np.ones(50))
+    resampy.resample(x, 100, 200, filter='sinc_window', window=np.ones(50))
 
 
 def test_good_window():
@@ -87,6 +87,6 @@ def test_good_window():
     sr_new = 200
     x = np.random.randn(500)
 
-    y = resampy.resample(x, sr_orig, sr_new, window=scipy.signal.blackman)
+    y = resampy.resample(x, sr_orig, sr_new, filter='sinc_window', window=scipy.signal.blackman)
 
     eq_(len(y), 2 * len(x))

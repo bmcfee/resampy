@@ -10,7 +10,7 @@ from .resample import resample_f
 __all__ = ['resample']
 
 
-def resample(x, sr_orig, sr_new, axis=-1, filter='sinc_window', **kwargs):
+def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
     '''Resample a signal x from sr_orig to sr_new along a given axis.
 
     Parameters
@@ -29,6 +29,8 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='sinc_window', **kwargs):
 
     filter : optional, str or callable
         The resampling filter to use.
+
+        By default, uses the `kaiser_best` (pre-computed filter).
 
     kwargs
         additional keyword arguments provided to the specified filter
@@ -60,7 +62,8 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='sinc_window', **kwargs):
     >>> resampy.resample(x, sr_orig, 22050, filter='kaiser_best')
     array([ 0.011,  0.123, ..., -0.193, -0.103])
     >>> # Resample using a Hann-windowed sinc filter
-    >>> resampy.resample(x, sr_orig, 22050, window=scipy.signal.hann)
+    >>> resampy.resample(x, sr_orig, 22050, filter='sinc_window',
+    ...                  window=scipy.signal.hann)
     array([ 0.011,  0.123, ..., -0.193, -0.103])
 
     >>> # Generate stereo data

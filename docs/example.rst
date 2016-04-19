@@ -65,11 +65,12 @@ The next block illustrates resampling along an arbitrary dimension.
     sr_orig = 22050
     x = np.random.randn(10, 3, sr_orig * 5, 2)
 
-    # x is now a 10-by-3-(5*22050)-by-2 tensor of data.
+    # x is now a 10-by-3-by-(5*22050)-by-2 tensor of data.
 
     # We can resample along the time axis as follows
     y_low = resampy.resample(x, sr_orig, 11025, axis=2)
 
+    # y_low is now a 10-by-3-(5*11025)-by-2 tensor of data
 
 Advanced filtering
 ==================
@@ -87,7 +88,14 @@ resampy allows you to control the design of the filters used in resampling opera
     x, sr_orig = librosa.load(librosa.util.example_audio_file(), sr=None, mono=False)
 
     # Resample to 22050Hz using a Hann-windowed sinc-filter
-    y = resampy.resample(x, sr_orig, sr_new, window=scipy.signal.hann)
+    y = resampy.resample(x, sr_orig, sr_new, filter='sinc_window', window=scipy.signal.hann)
 
     # Or a shorter sinc-filter than the default (num_zeros=64)
-    y = resampy.resample(x, sr_orig, sr_new, num_zeros=32)
+    y = resampy.resample(x, sr_orig, sr_new, filter='sinc_window', num_zeros=32)
+
+    # Or use the pre-built high-quality filter
+    y = resampy.resample(x, sr_orig, sr_new, filter='kaiser_best')
+
+    # Or use the pre-built fast filter
+    y = resampy.resample(x, sr_orig, sr_new, filter='kaiser_fast')
+
