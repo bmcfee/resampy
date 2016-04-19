@@ -4,7 +4,7 @@
 
 import numpy as np
 
-from . import filters
+from .filters import get_filter
 from .resample import resample_f
 
 __all__ = ['resample']
@@ -58,7 +58,7 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='sinc_window', **kwargs):
 
     y = np.zeros(shape, dtype=x.dtype)
 
-    interp_win, precision = filters.get_filter(filter, **kwargs)
+    interp_win, precision = get_filter(filter, **kwargs)
 
     if sample_ratio < 1:
         interp_win *= sample_ratio
