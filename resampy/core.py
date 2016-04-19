@@ -42,6 +42,36 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='sinc_window', **kwargs):
     ------
     ValueError
         if `sr_orig` or `sr_new` is not positive
+
+    Examples
+    --------
+    >>> # Generate a sine wave at 440 Hz for 5 seconds
+    >>> sr_orig = 44100.0
+    >>> x = np.sin(2 * np.pi * 440.0 / sr_orig * np.arange(5 * sr_orig))
+    >>> x
+    array([ 0.   ,  0.063, ..., -0.125, -0.063])
+    >>> # Resample to 22050 with default parameters
+    >>> resampy.resample(x, sr_orig, 22050)
+    array([ 0.011,  0.123, ..., -0.193, -0.103])
+    >>> # Resample using the fast (low-quality) filter
+    >>> resampy.resample(x, sr_orig, 22050, filter='kaiser_fast')
+    array([ 0.013,  0.121, ..., -0.189, -0.102])
+    >>> # Resample using a high-quality filter
+    >>> resampy.resample(x, sr_orig, 22050, filter='kaiser_best')
+    array([ 0.011,  0.123, ..., -0.193, -0.103])
+    >>> # Resample using a Hann-windowed sinc filter
+    >>> resampy.resample(x, sr_orig, 22050, window=scipy.signal.hann)
+    array([ 0.011,  0.123, ..., -0.193, -0.103])
+
+    >>> # Generate stereo data
+    >>> x_right = np.sin(2 * np.pi * 880.0 / sr_orig * np.arange(len(x)))])
+    >>> x_stereo = np.stack([x, x_right])
+    >>> x_stereo.shape
+    (2, 220500)
+    >>> # Resample along the time axis (1)
+    >>> y_stereo = resampy.resample(x, sr_orig, 22050, axis=1)
+    >>> y_stereo.shape
+    (2, 110250)
     '''
 
     if sr_orig <= 0:

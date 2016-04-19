@@ -47,6 +47,16 @@ def sinc_window(num_zeros=64, precision=9, window=None, rolloff=0.945):
         if `num_zeros < 1`, `precision < 1`,
         or `rolloff` is outside the range `(0, 1]`.
 
+    Examples
+    --------
+    >>> # A filter with 10 zero-crossings, 32 samples per crossing, and a
+    ... # Hann window for tapering.
+    >>> halfwin, prec = resampy.filters.sinc_window(num_zeros=10, precision=5,
+    ...                                             window=scipy.signal.hann)
+    >>> halfwin
+    array([  9.450e-01,   9.436e-01, ...,  -7.455e-07,  -0.000e+00])
+    >>> prec
+    32
     '''
 
     if window is None:
@@ -86,14 +96,14 @@ def get_filter(name_or_function, **kwargs):
         If a function, returns `name_or_function(**kwargs)`.
 
         If a string, and it matches the name of one of the defined
-        filter functions, the corresponding function is called with **kwargs.
+        filter functions, the corresponding function is called with `**kwargs`.
 
         If a string, and it matches the name of a pre-computed filter,
         the corresponding filter is retrieved, and kwargs is ignored.
 
         Valid pre-computed filter names are:
-        - 'kaiser_fast'
-        - 'kaiser_best'
+            - 'kaiser_fast'
+            - 'kaiser_best'
 
     Returns
     -------
