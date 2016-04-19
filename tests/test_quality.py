@@ -13,7 +13,7 @@ def make_tone(freq, sr, duration):
 def make_sweep(freq, sr, duration):
     
     return np.sin(np.cumsum(2 * np.pi * np.logspace(np.log2(2.0 / sr),
-                                                    np.log2(freq / sr),
+                                                    np.log2(float(freq) / sr),
                                                     num=duration*sr, base=2.0)))
 
 def test_quality_sine():
