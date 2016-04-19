@@ -2,9 +2,13 @@
 
 .. module:: resampy
 
-.. automodule:: core
+Core functionality
+------------------
+.. automodule:: resampy.core
     :members:
 
-.. automodule:: filters
+Filters
+-------
+.. automodule:: resampy.filters
     :members:
 
