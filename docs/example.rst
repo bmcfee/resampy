@@ -6,7 +6,7 @@ Monophonic resampling
 The following code block demonstrates how to resample an audio signal.
 
 We use `librosa <https://bmcfee.github.io/librosa/>`_ for loading the audio,
-but this is purely for ease of demonstration.  ``resampy`` does not depend on ``librosa``.
+but this is purely for ease of demonstration.  `resampy` does not depend on `librosa`.
 
 .. code-block:: python
     :linenos:
