@@ -91,6 +91,10 @@ def get_filter(name_or_function, **kwargs):
         If a string, and it matches the name of a pre-computed filter,
         the corresponding filter is retrieved, and kwargs is ignored.
 
+        Valid pre-computed filter names are:
+        - 'kaiser_fast'
+        - 'kaiser_best'
+
     Returns
     -------
     half_window : np.ndarray
