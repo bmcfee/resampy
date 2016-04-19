@@ -4,17 +4,17 @@ import numpy as np
 
 import resampy
 
+from nose.tools import raises
 
 def make_tone(freq, sr, duration):
     return np.sin(2 * np.pi * freq / sr * np.arange(sr * duration))
 
 
-def make_pulse(freq, sr, duration):
-    x = np.zeros(int(sr * duration))
-    x[::int(np.ceil(sr/float(freq)))] = 1
+def make_sweep(freq, sr, duration):
     
-    return x
-
+    return np.sin(np.cumsum(2 * np.pi * np.logspace(np.log2(2.0 / sr),
+                                                    np.log2(freq / sr),
+                                                    num=duration*sr, base=2.0)))
 
 def test_quality_sine():
 
@@ -39,8 +39,7 @@ def test_quality_sine():
                            ('kaiser_best', 1e-7)]:
             yield __test, sr_orig, sr_new, fil, rms, x, y
 
-
-def test_quality_pulse():
+def test_quality_sweep():
 
     def __test(sr_orig, sr_new, fil, rms, x, y):
 
@@ -51,15 +50,15 @@ def test_quality_pulse():
         err = np.mean(np.abs(y[idx] - y_pred[idx]))
         assert err <= rms, '{:g} > {:g}'.format(err, rms)
 
-    FREQ = 512.0
-    DURATION = 2.0
+    FREQ = 8192
+    DURATION = 5.0
 
     for (sr_orig, sr_new) in [ (44100, 22050), (22050, 44100) ]:
-        x = make_pulse(FREQ, sr_orig, DURATION)
-        y = make_pulse(FREQ, sr_new, DURATION)
+        x = make_sweep(FREQ, sr_orig, DURATION)
+        y = make_sweep(FREQ, sr_new, DURATION)
 
-        for (fil, rms) in [('sinc_window', 1e-6),
-                           ('kaiser_fast', 1e-4),
-                           ('kaiser_best', 1e-7)]:
+        for (fil, rms) in [('sinc_window', 1e-1),
+                           ('kaiser_fast', 1e-1),
+                           ('kaiser_best', 1e-1)]:
             yield __test, sr_orig, sr_new, fil, rms, x, y
 
