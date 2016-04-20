@@ -1,6 +1,4 @@
 include *.md
-include *.txt
 include *.py
 recursive-include resampy *.py *.pyx *.pxd *.npz
-recursive-include tools *.py
 include LICENSE
