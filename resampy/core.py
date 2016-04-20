@@ -5,7 +5,7 @@
 import numpy as np
 
 from .filters import get_filter
-from .resample import resample_f
+from .interp import resample_f
 
 __all__ = ['resample']
 
