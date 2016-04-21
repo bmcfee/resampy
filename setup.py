@@ -26,6 +26,16 @@ setup(
         'scipy>=0.13',
         'six>=1.3',
         'Cython>=0.21'],
+    extras_require={
+        'docs': [
+            'sphinx!=1.3.1',  # autodoc was broken in 1.3.1
+            'numpydoc',
+        ],
+        'tests': [
+            'pytest',
+            'pytest-cov',
+        ],
+    },
     classifiers=[
         "License :: OSI Approved :: ISC License (ISCL)",
         "Programming Language :: Python",
