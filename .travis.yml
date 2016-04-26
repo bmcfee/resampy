@@ -34,12 +34,11 @@ before_install:
 - conda install python=$TRAVIS_PYTHON_VERSION $CONDA_DEPS
 
 install:
-    - pip install python-coveralls
-    - pip install -e .
+    - pip install python-coveralls pytest-faulthandler
+    - pip install -e .[docs,tests]
 
 script:
-    - nosetests -v -w tests/ --with-coverage --cover-erase --cover-package=resampy
+    - py.test
 
 after_success:
     - coveralls
-
