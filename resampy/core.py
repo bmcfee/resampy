@@ -89,6 +89,10 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
     shape = list(x.shape)
     shape[axis] = int(shape[axis] * sample_ratio)
 
+    if shape[axis] < 1:
+        raise ValueError('Input signal length={} is too small to '
+                         'resample from {}->{}'.format(x.shape[axis], sr_orig, sr_new))
+
     y = np.zeros(shape, dtype=x.dtype)
 
     interp_win, precision = get_filter(filter, **kwargs)
