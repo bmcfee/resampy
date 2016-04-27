@@ -62,6 +62,13 @@ def test_bad_window():
     resampy.resample(x, 100, 200, filter='sinc_window', window=np.ones(50))
 
 
+@pytest.mark.xfail(raises=ValueError)
+def test_short_signal():
+
+    x = np.zeros(2)
+    resampy.resample(x, 4, 1)
+
+
 def test_good_window():
     sr_orig = 100
     sr_new = 200
