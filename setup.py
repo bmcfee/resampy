@@ -1,25 +1,49 @@
+#!/usr/bin/env python
+'''resampy setup script'''
+
+from __future__ import print_function
+import imp
+import sys
+import os
+import subprocess
+
 from setuptools import setup
 from setuptools.extension import Extension
 
 import numpy as np
 
-import imp
+PACKAGE_NAME = 'resampy'
 
-version = imp.load_source('resampy.version', 'resampy/version.py')
+VERSION = imp.load_source('resampy.version', 'resampy/version.py')
+
+def generate_cython(package):
+    """Cythonize all sources in the package"""
+    cwd = os.path.abspath(os.path.dirname(__file__))
+    print("Cythonizing sources")
+    p = subprocess.call([sys.executable,
+                         os.path.join(cwd, 'tools', 'cythonize.py'),
+                         package],
+                        cwd=cwd)
+    if p != 0:
+        raise RuntimeError("Running cythonize failed!")
+
+
+EXTENSIONS = [Extension("resampy.interp", ["resampy/interp.c"],
+                        include_dirs=[np.get_include()])]
+
+generate_cython(PACKAGE_NAME)
 
 setup(
     author="Brian McFee",
     author_email="brian.mcfee@nyu.edu",
-    name='resampy',
-    version=version.version,
+    name=PACKAGE_NAME,
+    version=VERSION.version,
     url='https://github.com/bmcfee/resampy',
     download_url='https://github.com/bmcfee/resampy/releases',
     description='Efficient signal resampling',
     license='ISC',
-    ext_modules=[Extension("resampy.interp",
-                           ["resampy/interp.pyx"],
-                           include_dirs=[np.get_include()] )],
-    packages=['resampy'],
+    ext_modules=EXTENSIONS,
+    packages=[PACKAGE_NAME],
     package_data={'resampy': ['data/*']},
     install_requires=[
         'numpy>=1.10',
@@ -45,5 +69,7 @@ setup(
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.5",
     ],
-) 
+)
