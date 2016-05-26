@@ -1,6 +1,11 @@
 Changes
 -------
 
+v0.1.2
+~~~~~~
+
+- `#20 <https://github.com/bmcfee/resampy/pull/20>`_ Expose the ``rolloff`` parameter of (pre-computed) filters
+
 v0.1.1
 ~~~~~~
 
