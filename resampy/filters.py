@@ -84,6 +84,8 @@ def sinc_window(num_zeros=64, precision=9, window=None, rolloff=0.945):
     array([  9.450e-01,   9.436e-01, ...,  -7.455e-07,  -0.000e+00])
     >>> prec
     32
+    >>> rolloff
+    0.945
 
     >>> # Or using sinc-window filter construction directly in resample
     >>> y = resampy.resample(x, sr_orig, sr_new, filter='sinc_window',
@@ -144,6 +146,9 @@ def get_filter(name_or_function, **kwargs):
 
     precision : int > 0
         The number of samples between zero-crossings of the filter
+
+    rolloff : float > 0
+        The roll-off frequency of the filter as a fraction of Nyquist
 
     Raises
     ------
