@@ -26,14 +26,14 @@ def test_filter_sinc(filt, window, num_zeros, precision, rolloff):
     if rolloff is not None:
         kwargs['rolloff'] = rolloff
 
-    interp, prec = resampy.filters.get_filter(filt, **kwargs)
+    interp, prec, _ = resampy.filters.get_filter(filt, **kwargs)
 
     if precision in kwargs:
         assert 2**precision == prec
 
 
 def test_filter_load():
-    half_win, precision = resampy.filters.get_filter('kaiser_best')
+    half_win, precision, _ = resampy.filters.get_filter('kaiser_best')
 
 
 @pytest.mark.xfail(raises=NotImplementedError, strict=True)

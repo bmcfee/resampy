@@ -63,6 +63,9 @@ def sinc_window(num_zeros=64, precision=9, window=None, rolloff=0.945):
     num_bits: int
         The number of bits of precision to use in the filter table
 
+    rolloff : float > 0
+        The roll-off frequency of the filter, as a fraction of Nyquist
+
     Raises
     ------
     TypeError
@@ -75,8 +78,8 @@ def sinc_window(num_zeros=64, precision=9, window=None, rolloff=0.945):
     --------
     >>> # A filter with 10 zero-crossings, 32 samples per crossing, and a
     ... # Hann window for tapering.
-    >>> halfwin, prec = resampy.filters.sinc_window(num_zeros=10, precision=5,
-    ...                                             window=scipy.signal.hann)
+    >>> halfwin, prec, rolloff = resampy.filters.sinc_window(num_zeros=10, precision=5,
+    ...                                                      window=scipy.signal.hann)
     >>> halfwin
     array([  9.450e-01,   9.436e-01, ...,  -7.455e-07,  -0.000e+00])
     >>> prec
@@ -113,7 +116,7 @@ def sinc_window(num_zeros=64, precision=9, window=None, rolloff=0.945):
 
     interp_win = (taper * sinc_win)
 
-    return interp_win, num_bits
+    return interp_win, num_bits, rolloff
 
 
 def get_filter(name_or_function, **kwargs):
@@ -174,6 +177,9 @@ def load_filter(filter_name):
 
     precision : int > 0
         The number of samples between zero-crossings of the fitler
+
+    rolloff : float > 0
+        The roll-off frequency of the filter, as a fraction of Nyquist
     '''
 
     fname = os.path.join('data',
@@ -181,4 +187,4 @@ def load_filter(filter_name):
 
     data = np.load(pkg_resources.resource_filename(__name__, fname))
 
-    return data['half_window'], data['precision']
+    return data['half_window'], data['precision'], data['rolloff']
