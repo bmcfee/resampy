@@ -25,7 +25,7 @@ setup(
         'numpy>=1.10',
         'scipy>=0.13',
         'six>=1.3',
-        'Cython>=0.21'],
+        'Cython>=0.23'],
     extras_require={
         'docs': [
             'sphinx!=1.3.1',  # autodoc was broken in 1.3.1
