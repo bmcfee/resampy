@@ -1,6 +1,11 @@
 Changes
 -------
 
+v0.1.3
+~~~~~~
+
+- `#23 <https://github.com/bmcfee/resampy/pull/23>`_ updated the Cython version requirement.
+
 v0.1.2
 ~~~~~~
 
