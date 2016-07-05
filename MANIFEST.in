@@ -1,4 +1,4 @@
 include *.md
 include *.py
-recursive-include resampy *.py *.pyx *.pxd *.npz
+recursive-include resampy *.c *.py *.pyx *.pxd *.npz
 include LICENSE
