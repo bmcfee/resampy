@@ -1,24 +1,23 @@
+'''resampy install script'''
+import imp
+
 from setuptools import setup
-from setuptools.extension import Extension
+from Cython.Build import cythonize
 
 import numpy as np
 
-import imp
-
-version = imp.load_source('resampy.version', 'resampy/version.py')
+VERSION = imp.load_source('resampy.version', 'resampy/version.py')
 
 setup(
     author="Brian McFee",
     author_email="brian.mcfee@nyu.edu",
     name='resampy',
-    version=version.version,
+    version=VERSION.version,
     url='https://github.com/bmcfee/resampy',
     download_url='https://github.com/bmcfee/resampy/releases',
     description='Efficient signal resampling',
     license='ISC',
-    ext_modules=[Extension("resampy.interp",
-                           ["resampy/interp.pyx"],
-                           include_dirs=[np.get_include()] )],
+    ext_modules=cythonize('resampy/*.pyx', include_path=[np.get_include()]),
     packages=['resampy'],
     package_data={'resampy': ['data/*']},
     install_requires=[
@@ -45,5 +44,7 @@ setup(
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.5",
     ],
-) 
+)
