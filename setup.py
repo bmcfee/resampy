@@ -17,8 +17,7 @@ setup(
     download_url='https://github.com/bmcfee/resampy/releases',
     description='Efficient signal resampling',
     license='ISC',
-    ext_modules=cythonize('resampy/*.pyx', include_path=[np.get_include()]),
-    include_dirs=[np.get_include()],
+    ext_modules=cythonize('resampy/*.pyx', include_dirs=[np.get_include()]),
     packages=['resampy'],
     package_data={'resampy': ['data/*']},
     install_requires=[
