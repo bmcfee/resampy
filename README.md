@@ -3,6 +3,7 @@
 [![GitHub license](https://img.shields.io/badge/license-ISC-blue.svg)](https://raw.githubusercontent.com/bmcfee/resampy/master/LICENSE)
 [![Build Status](https://travis-ci.org/bmcfee/resampy.png?branch=master)](http://travis-ci.org/bmcfee/resampy?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/bmcfee/resampy/badge.svg?branch=master)](https://coveralls.io/github/bmcfee/resampy?branch=master)
+[![Dependency Status](https://dependencyci.com/github/bmcfee/resampy/badge)](https://dependencyci.com/github/bmcfee/resampy)
 [![Documentation Status](https://readthedocs.org/projects/resampy/badge/?version=latest)](http://resampy.readthedocs.org/en/latest/?badge=latest)
 
 Efficient audio resampling in Python / Cython.
