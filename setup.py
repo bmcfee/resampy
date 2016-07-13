@@ -2,7 +2,7 @@
 import imp
 
 from setuptools import setup, Extension
-from Cython.Build import cythonize
+from Cython.Distutils import build_ext
 
 import numpy as np
 
@@ -17,9 +17,10 @@ setup(
     download_url='https://github.com/bmcfee/resampy/releases',
     description='Efficient signal resampling',
     license='ISC',
-    ext_modules=cythonize([Extension('resampy.interp',
-                                     ['resampy/interp.pyx'],
-                                     include_dirs=[np.get_include()])]),
+    ext_modules=[Extension('resampy.interp',
+                           ['resampy/interp.pyx'],
+                           include_dirs=[np.get_include()])],
+    cmdclass={'build_ext': build_ext},
     packages=['resampy'],
     package_data={'resampy': ['data/*']},
     install_requires=[
