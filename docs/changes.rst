@@ -1,6 +1,11 @@
 Changes
 -------
 
+v0.1.4
+~~~~~~
+
+- `#27 <https://github.com/bmcfee/resampy/pull/27>`_ Fixed cython packaging
+
 v0.1.3
 ~~~~~~
 
