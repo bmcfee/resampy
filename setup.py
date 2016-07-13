@@ -1,12 +1,30 @@
 '''resampy install script'''
 import imp
+import sys
 
 from setuptools import setup, Extension
-from Cython.Distutils import build_ext
-
 import numpy as np
 
+
+USE_CYTHON = False
+EXT = '.c'
+
+if 'build_ext' in sys.argv:
+    from Cython.Build import cythonize
+    USE_CYTHON = True
+    EXT = '.pyx'
+
+
 VERSION = imp.load_source('resampy.version', 'resampy/version.py')
+
+sourcefiles = ['resampy/interp' + EXT]
+extensions = [Extension('resampy.interp',
+                        ['resampy/interp' + EXT],
+                        include_dirs=[np.get_include()])]
+
+if USE_CYTHON:
+    extensions = cythonize(extensions)
+
 
 setup(
     author="Brian McFee",
@@ -17,10 +35,7 @@ setup(
     download_url='https://github.com/bmcfee/resampy/releases',
     description='Efficient signal resampling',
     license='ISC',
-    ext_modules=[Extension('resampy.interp',
-                           ['resampy/interp.pyx'],
-                           include_dirs=[np.get_include()])],
-    cmdclass={'build_ext': build_ext},
+    ext_modules=extensions,
     packages=['resampy'],
     package_data={'resampy': ['data/*']},
     install_requires=[
