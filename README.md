@@ -6,6 +6,15 @@
 [![Dependency Status](https://dependencyci.com/github/bmcfee/resampy/badge)](https://dependencyci.com/github/bmcfee/resampy)
 [![Documentation Status](https://readthedocs.org/projects/resampy/badge/?version=latest)](http://resampy.readthedocs.org/en/latest/?badge=latest)
 
+
+Linux: [![Circle CI](https://circleci.com/gh/conda-forge/resampy-feedstock.svg?style=svg)](https://circleci.com/gh/conda-forge/resampy-feedstock)
+OSX: [![TravisCI](https://travis-ci.org/conda-forge/resampy-feedstock.svg?branch=master)](https://travis-ci.org/conda-forge/resampy-feedstock)
+Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/conda-forge/resampy-feedstock?svg=True)](https://ci.appveyor.com/project/conda-forge/resampy-feedstock/branch/master)
+
+Version: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/resampy/badges/version.svg)](https://anaconda.org/conda-forge/resampy)
+Downloads: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/resampy/badges/downloads.svg)](https://anaconda.org/conda-forge/resampy)
+
+
 Efficient audio resampling in Python / Cython.
 
 This package implements the band-limited sinc interpolation method for sampling rate conversion as described by:
