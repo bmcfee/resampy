@@ -1,0 +1,15 @@
+{
+  "@context": "https://raw.githubusercontent.com/mbjones/codemeta/master/codemeta.jsonld",
+  "@type": "Code",
+  "author": ["Brian McFee"],
+  "identifier": "10.5281/zenodo.163184",
+  "codeRepository": "https://github.com/bmcfee/resampy",
+  "datePublished": "2016-10-25",
+  "dateModified": "2016-10-25",
+  "dateCreated": "2016-10-25",
+  "description": "Efficient sample rate conversion for time-domain signals in Python",
+  "keywords": "digital signal processing, sample rate conversion",
+  "license": "ISC",
+  "title": "resampy",
+  "version": "0.1.4"
+}
