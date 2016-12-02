@@ -99,3 +99,29 @@ resampy allows you to control the design of the filters used in resampling opera
     # Or use the pre-built fast filter
     y = resampy.resample(x, sr_orig, sr_new, filter='kaiser_fast')
 
+
+Benchmarking
+============
+Benchmarking `resampy` is relatively simple, using `ipython`'s ``%timeit`` magic.
+The following example demonstrates resampling a monophonic signal of 400000 samples from
+22.05 KHz to 16 KHz using both `resampy` and `scipy.signal.resample`.
+
+.. code-block:: python
+
+    In [1]: import numpy as np
+
+    In [2]: import scipy
+    
+    In [3]: import resampy
+    
+    In [4]: x = np.random.randn(400000)
+    
+    In [5]: sr_in, sr_out = 22050, 16000
+    
+    In [6]: %timeit resampy.resample(x, sr_in, sr_out, axis=-1)
+    1 loop, best of 3: 199 ms per loop
+    
+    In [7]: %timeit scipy.signal.resample(x,
+       ...:                               int(x.shape[-1] * sr_out / float(sr_in)),
+       ...:                               axis=-1)
+    1 loop, best of 3: 6min 5s per loop
