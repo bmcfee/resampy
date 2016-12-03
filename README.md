@@ -31,6 +31,5 @@ pip install resampy
 
 Pre-built packages can be installed with `conda` by saying:
 ```
-conda config --add channels conda-forge
-conda install resampy
+conda install -c conda-forge resampy
 ```

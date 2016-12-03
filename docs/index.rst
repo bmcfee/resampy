@@ -25,6 +25,45 @@ Its dependencies are `numpy <http://www.numpy.org/>`_, `scipy
 
 For a quick introduction to using `resampy`, please refer to the `Examples`_ section.
 
+Installation
+------------
+`resampy` can be installed from source through `pip`:
+
+.. code-block:: bash
+
+    pip install resampy
+
+
+Conda users can install pre-compiled packages:
+
+.. code-block:: bash
+
+    conda install -c conda-forge resampy
+
+
+Advanced users and developers may wish to install from source by cloning the source repository:
+
+.. code-block:: bash
+
+    git clone https://github.com/bmcfee/resampy.git
+    cd resampy
+    python setup.py build_ext -i
+    pip install -e .
+
+
+Running tests
+=============
+
+Developers that wish to run the included unit test suite can do so by installing from source, and then
+executing the following commands from the source directory:
+
+.. code-block:: bash
+
+    pip install -e .[tests]
+    pip install pytest pytest-cov pytest-faulthandler
+    py.test --cov-report term-missing --cov resampy
+
+
 Examples
 --------
 .. toctree::
