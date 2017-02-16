@@ -3,7 +3,7 @@ Changes
 
 v0.1.5
 ~~~~~~
-- `#44 <https://github.com/bmcfee/resampy/pull/44>`_ Added type-checking to ensure floating-point inputs
+- `#44 <https://github.com/bmcfee/resampy/issues/44>`_ Added type-checking to ensure floating-point inputs
 
 v0.1.4
 ~~~~~~
