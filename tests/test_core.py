@@ -47,12 +47,18 @@ def test_bad_num_zeros():
     resampy.resample(x, 100, 50, filter='sinc_window', num_zeros=0)
 
 
-@pytest.mark.parametrize('dtype', [np.float32, np.float64])
+@pytest.mark.parametrize('dtype', [np.float32, np.float64,
+                                   np.int16, np.int32, np.int64])
 def test_dtype(dtype):
     x = np.random.randn(100).astype(dtype)
-    y = resampy.resample(x, 100, 200)
 
-    assert x.dtype == y.dtype
+    if np.issubdtype(dtype, np.float):
+        y = resampy.resample(x, 100, 200)
+
+        assert x.dtype == y.dtype
+    else:
+        with pytest.raises(TypeError):
+            y = resampy.resample(x, 100, 200)
 
 
 @pytest.mark.xfail(raises=TypeError)

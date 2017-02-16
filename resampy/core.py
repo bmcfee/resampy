@@ -15,8 +15,8 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
 
     Parameters
     ----------
-    x : np.ndarray
-        The input signal(s) to resample
+    x : np.ndarray, dtype=np.float*
+        The input signal(s) to resample. Must be real-valued.
 
     sr_orig : int > 0
         The sampling rate of x
@@ -44,6 +44,10 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
     ------
     ValueError
         if `sr_orig` or `sr_new` is not positive
+
+    TypeError
+        if the input signal `x` has an unsupported data type.
+        Currently, only floating point (real) types are supported.
 
     Examples
     --------
@@ -82,6 +86,10 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
 
     if sr_new <= 0:
         raise ValueError('Invalid sample rate: sr_new={}'.format(sr_new))
+
+    if not np.issubdtype(x.dtype, np.float):
+        raise TypeError('Unable to resample signals of dtype={}. '
+                        'Only floating-point types are supported.'.format(x.dtype))
 
     sample_ratio = float(sr_new) / sr_orig
 
