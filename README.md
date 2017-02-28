@@ -19,7 +19,7 @@ This package implements the band-limited sinc interpolation method for sampling 
 > Smith, Julius O. Digital Audio Resampling Home Page
 > Center for Computer Research in Music and Acoustics (CCRMA), 
 > Stanford University, 2015-02-23.
-> Web published at [http://www-ccrma.stanford.edu/~jos/resample/](http://www-ccrma.stanford.edu/~jos/resample/).
+> Web published at [http://ccrma.stanford.edu/~jos/resample/](http://ccrma.stanford.edu/~jos/resample/).
 
 
 # Installation
