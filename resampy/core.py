@@ -2,14 +2,10 @@
 # -*- encoding: utf-8 -*-
 '''Core resampling interface'''
 
-import os
 import numpy as np
 
 from .filters import get_filter
 
-#if 'RESAMPY_NUMBA' not in os.environ:
-#    from .interp import resample_f
-#else:
 from .interpn import resample_f
 
 __all__ = ['resample']
