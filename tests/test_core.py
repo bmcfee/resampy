@@ -52,13 +52,9 @@ def test_bad_num_zeros():
 def test_dtype(dtype):
     x = np.random.randn(100).astype(dtype)
 
-    if np.issubdtype(dtype, np.float):
-        y = resampy.resample(x, 100, 200)
+    y = resampy.resample(x, 100, 200)
 
-        assert x.dtype == y.dtype
-    else:
-        with pytest.raises(TypeError):
-            y = resampy.resample(x, 100, 200)
+    assert x.dtype == y.dtype
 
 
 @pytest.mark.xfail(raises=TypeError)
