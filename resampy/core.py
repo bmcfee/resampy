@@ -88,10 +88,6 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
     if sr_new <= 0:
         raise ValueError('Invalid sample rate: sr_new={}'.format(sr_new))
 
-    if not np.issubdtype(x.dtype, np.float):
-        raise TypeError('Unable to resample signals of dtype={}. '
-                        'Only floating-point types are supported.'.format(x.dtype))
-
     sample_ratio = float(sr_new) / sr_orig
 
     # Set up the output shape
