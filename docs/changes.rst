@@ -1,6 +1,12 @@
 Changes
 -------
 
+v0.2.0
+~~~~~~
+- `#57 <https://github.com/bmcfee/resampy/issues/57>`_ Rewrote the core resampler using Numba. This should alleviate Cython-based installation issues going forward.
+- `#14 <https://github.com/bmcfee/resampy/issues/14>`_ Added support for resampling complex-valued signals.
+- `#17 <https://github.com/bmcfee/resampy/issues/17>`_ Added a safety check for resampling short signals.
+
 v0.1.5
 ~~~~~~
 - `#44 <https://github.com/bmcfee/resampy/issues/44>`_ Added type-checking to ensure floating-point inputs
