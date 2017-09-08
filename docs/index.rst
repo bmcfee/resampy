@@ -20,7 +20,7 @@ sampling rate --- `resampy` will be considerably faster
 than `scipy.signal.resample` and have little perceivable difference in audio quality.
 
 Its dependencies are `numpy <http://www.numpy.org/>`_, `scipy
-<http://www.scipy.org>`_, and `Cython <http://www.cython.org/>`_.
+<http://www.scipy.org>`_, and `numba <http://numba.pydata.org/>`_.
 
 
 For a quick introduction to using `resampy`, please refer to the `Examples`_ section.

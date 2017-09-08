@@ -1,7 +1,7 @@
 [run]
-plugins = Cython.Coverage
 omit =
     resampy/setup.py
+    resampy/interpn.py
     resampy/__check_build/*
 [report]
 show_missing = True
