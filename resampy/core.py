@@ -17,7 +17,7 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
     Parameters
     ----------
     x : np.ndarray, dtype=np.float*
-        The input signal(s) to resample. Must be real-valued.
+        The input signal(s) to resample.
 
     sr_orig : int > 0
         The sampling rate of x
@@ -48,7 +48,6 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
 
     TypeError
         if the input signal `x` has an unsupported data type.
-        Currently, only floating point (real) types are supported.
 
     Examples
     --------
