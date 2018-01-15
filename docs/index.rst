@@ -12,7 +12,7 @@ band-limited sinc interpolation method for sampling rate conversion as described
 .. [1] Smith, Julius O. Digital Audio Resampling Home Page
     Center for Computer Research in Music and Acoustics (CCRMA), 
     Stanford University, 2015-02-23.
-    Web published at `<http://www-ccrma.stanford.edu/~jos/resample/>`_.
+    Web published at `<http://ccrma.stanford.edu/~jos/resample/>`_.
 
 `resampy` supports multi-dimensional resampling on numpy arrays, and is well-suited to
 audio applications.  For long-duration signals --- e.g., minutes at a high-quality
