@@ -10,8 +10,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/bmcfee/resampy/badge.svg?branch=master)](https://coveralls.io/github/bmcfee/resampy?branch=master)
 [![Dependency Status](https://dependencyci.com/github/bmcfee/resampy/badge)](https://dependencyci.com/github/bmcfee/resampy)
 [![Documentation Status](https://readthedocs.org/projects/resampy/badge/?version=latest)](http://resampy.readthedocs.org/en/latest/?badge=latest)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.163184.svg)](https://doi.org/10.5281/zenodo.163184)
-
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.596633.svg)](https://doi.org/10.5281/zenodo.596633)
 
 Efficient sample rate conversion in Python.
 
