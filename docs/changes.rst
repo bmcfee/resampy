@@ -1,6 +1,10 @@
 Changes
 -------
 
+v0.2.1
+~~~~~~
+- `#63 <https://github.com/bmcfee/resampy/issues/63>`_ Fixed an error in filter response boundary calculations.
+
 v0.2.0
 ~~~~~~
 - `#57 <https://github.com/bmcfee/resampy/issues/57>`_ Rewrote the core resampler using Numba. This should alleviate Cython-based installation issues going forward.
