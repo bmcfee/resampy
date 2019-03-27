@@ -56,7 +56,7 @@ project = u'resampy'
 copyright = u'2016, Brian McFee'
 
 import mock
-MOCK_MODULES = ['numpy', 'scipy', 'scipy.signal', 'resampy.interp']
+MOCK_MODULES = ['numpy', 'scipy', 'scipy.signal', 'resampy.interp', 'numba']
 sys.modules.update((mod_name, mock.Mock()) for mod_name in MOCK_MODULES)
 
 # The version info for the project you're documenting, acts as replacement for
