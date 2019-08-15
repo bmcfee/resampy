@@ -78,3 +78,17 @@ def test_good_window():
     y = resampy.resample(x, sr_orig, sr_new, filter='sinc_window', window=scipy.signal.blackman)
 
     assert len(y) == 2 * len(x)
+
+
+@pytest.mark.parametrize('order', ['C', 'F'])
+@pytest.mark.parametrize('shape', [(50,), (10, 50), (10, 25, 50)])
+@pytest.mark.parametrize('axis', [0, -1])
+def test_contiguity(order, shape, axis):
+
+    x = np.zeros(shape, dtype=np.float, order=order)
+    sr_orig = 1
+    sr_new = 2
+    y = resampy.resample(x, sr_orig, sr_new, axis=axis)
+
+    assert x.flags['C_CONTIGUOUS'] == y.flags['C_CONTIGUOUS']
+    assert x.flags['F_CONTIGUOUS'] == y.flags['F_CONTIGUOUS']

@@ -97,7 +97,14 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
         raise ValueError('Input signal length={} is too small to '
                          'resample from {}->{}'.format(x.shape[axis], sr_orig, sr_new))
 
-    y = np.zeros(shape, dtype=x.dtype)
+    # Preserve contiguity of input (if it exists)
+    # If not, revert to C-contiguity by default
+    if x.flags['F_CONTIGUOUS']:
+        order = 'F'
+    else:
+        order = 'C'
+
+    y = np.zeros(shape, dtype=x.dtype, order=order)
 
     interp_win, precision, _ = get_filter(filter, **kwargs)
 
