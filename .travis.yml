@@ -33,6 +33,7 @@ before_install:
 - conda update conda
 - conda info -a
 - conda install python=$TRAVIS_PYTHON_VERSION $CONDA_DEPS
+- conda install -c conda-forge pytest-faulthandler
 
 install:
     - pip install -e .[docs,tests]
