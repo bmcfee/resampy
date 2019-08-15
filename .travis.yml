@@ -9,9 +9,9 @@ notifications:
 
 python:
   - 2.7
-  - 3.4
   - 3.5
   - 3.6
+  - 3.7
 
 cache:
     directories:
@@ -39,7 +39,7 @@ install:
     - pip install -e .[docs,tests]
 
 script:
-    - py.test
+    - pytest
 
 after_success:
     - coveralls
