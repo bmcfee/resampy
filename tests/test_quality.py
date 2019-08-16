@@ -8,13 +8,13 @@ import resampy
 
 
 def make_tone(freq, sr, duration):
-    return np.sin(2 * np.pi * freq / sr * np.arange(sr * duration))
+    return np.sin(2 * np.pi * freq / sr * np.arange(int(sr * duration)))
 
 
 def make_sweep(freq, sr, duration):
     return np.sin(np.cumsum(2 * np.pi * np.logspace(np.log2(2.0 / sr),
                                                     np.log2(float(freq) / sr),
-                                                    num=duration*sr, base=2.0)))
+                                                    num=int(duration*sr), base=2.0)))
 
 
 @pytest.mark.parametrize('sr_orig,sr_new', [(44100, 22050), (22050, 44100)])

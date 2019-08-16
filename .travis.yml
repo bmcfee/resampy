@@ -9,9 +9,9 @@ notifications:
 
 python:
   - 2.7
-  - 3.4
   - 3.5
   - 3.6
+  - 3.7
 
 cache:
     directories:
@@ -20,7 +20,7 @@ cache:
 env:
   global:
     # Directory where tests are run from
-    - CONDA_DEPS="pip nose numpy scipy numba"
+    - CONDA_DEPS="pip nose numpy scipy numba pytest<4 coveralls"
 
 before_install:
 - export MINICONDA=$HOME/miniconda
@@ -35,11 +35,10 @@ before_install:
 - conda install python=$TRAVIS_PYTHON_VERSION $CONDA_DEPS
 
 install:
-    - pip install python-coveralls pytest-faulthandler
     - pip install -e .[docs,tests]
 
 script:
-    - py.test
+    - pytest
 
 after_success:
     - coveralls
