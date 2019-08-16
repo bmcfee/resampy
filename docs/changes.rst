@@ -1,6 +1,10 @@
 Changes
 -------
 
+v0.2.2
+~~~~~~
+- `#68 <https://github.com/bmcfee/resampy/issues/68>`_ Preserve array ordering (C- or F-contiguity) from input to output.
+
 v0.2.1
 ~~~~~~
 - `#63 <https://github.com/bmcfee/resampy/issues/63>`_ Fixed an error in filter response boundary calculations.
