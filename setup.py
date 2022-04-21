@@ -29,7 +29,7 @@ setup(
             'numpydoc',
         ],
         'tests': [
-            'pytest < 4',
+            'pytest < 8',
             'pytest-cov',
         ],
     },
