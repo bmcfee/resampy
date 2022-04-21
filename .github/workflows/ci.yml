@@ -1,0 +1,46 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["2.7", "3.5", "3.6", "3.7", "3.8", "3.9", "3.10"]
+        include:
+          - os: windows-latest
+            python-version: "3.10"
+          - os: macos-latest
+            python-version: "3.10"
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Conda Environment
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        miniforge-variant: Mambaforge
+        miniforge-version: latest
+        python-version: ${{ matrix.python-version }}
+        use-mamba: true
+    - name: Install dependencies
+      shell: bash -l {0}
+      run: |
+        mamba install typing_extensions!=4.2
+        mamba install pip numpy scipy numba pytest
+    - name: Install
+      shell: bash -l {0}
+      run: |
+        python -m pip install -e .[docs,tests]
+    - name: Test
+      shell: bash -l {0}
+      run: |
+        python -m pytest
