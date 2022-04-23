@@ -64,3 +64,6 @@ target/
 # Cython cruft
 cythonize.dat
 *.c
+
+# VSCode
+.vscode
