@@ -8,13 +8,13 @@ import resampy
 
 
 def make_tone(freq, sr, duration):
-    return np.sin(2 * np.pi * freq / sr * np.arange(int(sr * duration)))
+    t = np.arange(int(sr * duration)) / sr
+    return np.sin(2 * np.pi * freq * t), t
 
 
 def make_sweep(freq, sr, duration):
-    return np.sin(np.cumsum(2 * np.pi * np.logspace(np.log2(2.0 / sr),
-                                                    np.log2(float(freq) / sr),
-                                                    num=int(duration*sr), base=2.0)))
+    t = np.linspace(1, np.log2(float(freq)), num=int(duration*sr), endpoint=True)
+    return np.sin(np.cumsum(2 * np.pi * 2**(t - np.log2(sr)))), t
 
 
 @pytest.mark.parametrize('sr_orig,sr_new', [(44100, 22050), (22050, 44100)])
@@ -26,8 +26,8 @@ def test_quality_sine(sr_orig, sr_new, fil, rms):
     FREQ = 512.0
     DURATION = 2.0
 
-    x = make_tone(FREQ, sr_orig, DURATION)
-    y = make_tone(FREQ, sr_new, DURATION)
+    x, _ = make_tone(FREQ, sr_orig, DURATION)
+    y, _ = make_tone(FREQ, sr_new, DURATION)
     y_pred = resampy.resample(x, sr_orig, sr_new, filter=fil)
 
     idx = slice(sr_new // 2, - sr_new//2)
@@ -44,12 +44,57 @@ def test_quality_sine(sr_orig, sr_new, fil, rms):
 def test_quality_sweep(sr_orig, sr_new, fil, rms):
     FREQ = 8192
     DURATION = 5.0
-    x = make_sweep(FREQ, sr_orig, DURATION)
-    y = make_sweep(FREQ, sr_new, DURATION)
+    x, _ = make_sweep(FREQ, sr_orig, DURATION)
+    y, _ = make_sweep(FREQ, sr_new, DURATION)
 
     y_pred = resampy.resample(x, sr_orig, sr_new, filter=fil)
 
     idx = slice(sr_new // 2, - sr_new//2)
 
     err = np.mean(np.abs(y[idx] - y_pred[idx]))
+    assert err <= rms, '{:g} > {:g}'.format(err, rms)
+
+
+@pytest.mark.parametrize('sr_orig,sr_new', [(44100, 22050), (22050, 44100)])
+@pytest.mark.parametrize(
+    'fil,rms',
+    [('sinc_window', 1e-6), ('kaiser_fast', 1e-4), ('kaiser_best', 1e-7)]
+)
+def test_interp1_quality_sine(sr_orig, sr_new, fil, rms):
+    FREQ = 512.0
+    DURATION = 2.0
+
+    x, t_in = make_tone(FREQ, sr_orig, DURATION)
+    y, t_out = make_tone(FREQ, sr_new, DURATION)
+
+    dt = t_in[1] - t_in[0]
+    t = (t_out - t_in[0]) / dt
+
+    y_pred = resampy.interp1(x, t[:-1], filter=fil)
+
+    idx = slice(sr_new // 2, - sr_new//2)
+
+    err = np.mean(np.abs(y[:-1][idx] - y_pred[idx]))
+    assert err <= rms, '{:g} > {:g}'.format(err, rms)
+
+
+@pytest.mark.parametrize('sr_orig,sr_new', [(44100, 22050), (22050, 44100)])
+@pytest.mark.parametrize(
+    'fil,rms',
+    [('sinc_window', 1e-1), ('kaiser_fast', 1e-1), ('kaiser_best', 1e-1)]
+)
+def test_interp1_quality_sweep(sr_orig, sr_new, fil, rms):
+    FREQ = 8192
+    DURATION = 5.0
+    x, t_in = make_sweep(FREQ, sr_orig, DURATION)
+    y, t_out = make_sweep(FREQ, sr_new, DURATION)
+
+    dt = t_in[1] - t_in[0]
+    t = (t_out - t_in[0]) / dt
+
+    y_pred = resampy.interp1(x, t[:-1], filter=fil)
+
+    idx = slice(sr_new // 2, - sr_new//2)
+
+    err = np.mean(np.abs(y[:-1][idx] - y_pred[idx]))
     assert err <= rms, '{:g} > {:g}'.format(err, rms)

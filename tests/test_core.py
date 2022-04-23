@@ -21,6 +21,19 @@ def test_shape(axis):
     assert target_shape == list(Y.shape)
 
 
+@pytest.mark.parametrize('axis', [0, 1, 2])
+def test_interp1_shape(axis):
+    sr_orig = 100
+    X = np.random.randn(sr_orig, sr_orig, sr_orig)
+    t = np.arange(2 * X.shape[axis] - 1) / 2
+    Y = resampy.interp1(X, t, axis=axis)
+
+    target_shape = list(X.shape)
+    target_shape[axis] = len(t)
+
+    assert target_shape == list(Y.shape)
+
+
 @pytest.mark.xfail(raises=ValueError, strict=True)
 @pytest.mark.parametrize('sr_orig, sr_new', [(100, 0), (100, -1), (0, 100), (-1, 100)])
 def test_bad_sr(sr_orig, sr_new):
@@ -57,6 +70,17 @@ def test_dtype(dtype):
     assert x.dtype == y.dtype
 
 
+@pytest.mark.parametrize('dtype', [np.float32, np.float64,
+                                   np.int16, np.int32, np.int64])
+def test_interp1_dtype(dtype):
+    x = np.random.randn(100).astype(dtype)
+    t = np.arange(2 * len(x) - 1) / 2
+
+    y = resampy.interp1(x, t)
+
+    assert x.dtype == y.dtype
+
+
 @pytest.mark.xfail(raises=TypeError)
 def test_bad_window():
     x = np.zeros(100)
@@ -69,6 +93,14 @@ def test_short_signal():
 
     x = np.zeros(2)
     resampy.resample(x, 4, 1)
+
+
+@pytest.mark.xfail(raises=ValueError)
+def test_interp1_short_signal():
+
+    x = np.zeros(2)
+    t = np.asarray([])
+    resampy.interp1(x, t)
 
 
 def test_good_window():
@@ -92,3 +124,27 @@ def test_contiguity(order, shape, axis):
 
     assert x.flags['C_CONTIGUOUS'] == y.flags['C_CONTIGUOUS']
     assert x.flags['F_CONTIGUOUS'] == y.flags['F_CONTIGUOUS']
+
+
+@pytest.mark.parametrize('order', ['C', 'F'])
+@pytest.mark.parametrize('shape', [(50,), (10, 50), (10, 25, 50)])
+@pytest.mark.parametrize('axis', [0, -1])
+def test_interp1_contiguity(order, shape, axis):
+
+    x = np.zeros(shape, dtype=np.float, order=order)
+    t = np.arange(x.shape[axis] * 2 - 1) / 2
+    y = resampy.interp1(x, t, axis=axis)
+
+    assert x.flags['C_CONTIGUOUS'] == y.flags['C_CONTIGUOUS']
+    assert x.flags['F_CONTIGUOUS'] == y.flags['F_CONTIGUOUS']
+
+
+@pytest.mark.xfail(raises=ValueError)
+@pytest.mark.parametrize('shape', [(50,), (10, 50), (10, 25, 50)])
+@pytest.mark.parametrize('axis', [0, -1])
+@pytest.mark.parametrize('domain', [(0, 100), (-1, 5)])
+def test_interp1_domain(shape, axis, domain):
+
+    x = np.zeros(shape, dtype=np.float)
+    t = np.linspace(*domain, num=10, endpoint=True)
+    resampy.interp1(x, t, axis=axis)

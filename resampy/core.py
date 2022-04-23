@@ -6,9 +6,9 @@ import numpy as np
 
 from .filters import get_filter
 
-from .interpn import resample_f
+from .interpn import resample_f, interp1_f
 
-__all__ = ['resample']
+__all__ = ['resample', 'interp1']
 
 
 def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
@@ -121,5 +121,123 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
     x_2d = x.swapaxes(0, axis).reshape((x.shape[axis], -1))
     y_2d = y.swapaxes(0, axis).reshape((y.shape[axis], -1))
     resample_f(x_2d, y_2d, sample_ratio, interp_win, interp_delta, precision)
+
+    return y
+
+
+def interp1(x, t_out, axis=-1, filter='kaiser_best', **kwargs):
+    '''Interpolate a signal x at specified positions (t_out) along a given axis.
+
+    Parameters
+    ----------
+    x : np.ndarray, dtype=np.float*
+        The input signal(s) to resample.
+
+    t_out : np.ndarray, dtype=np.float*
+        Normalized position of the output samples.
+
+    axis : int
+        The target axis along which to resample `x`
+
+    filter : optional, str or callable
+        The resampling filter to use.
+
+        By default, uses the `kaiser_best` (pre-computed filter).
+
+    kwargs
+        additional keyword arguments provided to the specified filter
+
+    Returns
+    -------
+    y : np.ndarray
+        `x` resampled to `t_out`
+
+    Raises
+    ------
+    TypeError
+        if the input signal `x` has an unsupported data type.
+
+    Notes
+    -----
+    Differently form the `resample` function the filter `rolloff`
+    is not automatically adapted in case of subsampling.
+    For this reason results obtained with the `interp1` could be slightly
+    different form the ones obtained with `resample` if the filter
+    parameters are not carefully set by the user.
+
+    Examples
+    --------
+    >>> import resampy
+    >>> np.set_printoptions(precision=3, suppress=True)
+    >>> # Generate a sine wave at 440 Hz for 5 seconds
+    >>> sr_orig = 44100.0
+    >>> f0 = 440
+    >>> t = np.arange(5 * sr_orig) / sr_orig
+    >>> x = np.sin(2 * np.pi * f0 * t)
+    >>> x
+    array([ 0.   ,  0.063,  0.125, ..., -0.187, -0.125, -0.063])
+    >>> # Resample to 22050 with default parameters
+    >>> sr_new = 22050.0
+    >>> t_new = np.arange(5 * sr_new) / sr_new
+    >>> # Normalize the locations of new sampls
+    >>> t_new = (t_new - t[0]) / (t[1] - t[0])
+    >>> resampy.interp1(x, t_new)
+    array([ 0.001,  0.126,  0.249, ..., -0.368, -0.249, -0.126])
+    >>> # Resample using the fast (low-quality) filter
+    >>> resampy.interp1(x, t_new, filter='kaiser_fast')
+    array([ 0.002,  0.127,  0.249, ..., -0.367, -0.249, -0.127])
+    >>> # Resample using a high-quality filter
+    >>> resampy.interp1(x, t_new, filter='kaiser_best')
+    array([ 0.001,  0.126,  0.249, ..., -0.368, -0.249, -0.126])
+    >>> # Resample using a Hann-windowed sinc filter
+    >>> import scipy.signal
+    >>> resampy.interp1(x, t_new, filter='sinc_window',
+    ...                 window=scipy.signal.hann)
+    array([ 0.001,  0.126,  0.249, ..., -0.368, -0.249, -0.126])
+
+    >>> # Generate stereo data
+    >>> x_right = np.sin(2 * np.pi * 880.0 * t)
+    >>> x_stereo = np.stack([x, x_right])
+    >>> x_stereo.shape
+    (2, 220500)
+    >>> # Resample along the time axis (1)
+    >>> y_stereo = resampy.interp1(x_stereo, t_new, axis=1)
+    >>> y_stereo.shape
+    (2, 110250)
+    '''
+    if np.min(t_out) < 0 or np.max(t_out) > x.shape[axis] - 1:
+        raise ValueError('Output domain [{}, {}] exceedes the data domain [0, {}]'.format(
+            np.min(t_out), np.max(t_out), x.shape[axis] - 1))
+
+    # Set up the output shape
+    shape = list(x.shape)
+    shape[axis] = len(t_out)
+
+    if shape[axis] < 1:
+        raise ValueError('Input signal length={} is too small to '
+                         'resample from {}->{}'.format(x.shape[axis], x.shape[axis], len(t_out)))
+
+    # Preserve contiguity of input (if it exists)
+    # If not, revert to C-contiguity by default
+    if x.flags['F_CONTIGUOUS']:
+        order = 'F'
+    else:
+        order = 'C'
+
+    y = np.zeros(shape, dtype=x.dtype, order=order)
+
+    interp_win, precision, _ = get_filter(filter, **kwargs)
+
+    # TODO: check
+    # if sample_ratio < 1:
+    #     interp_win *= sample_ratio
+
+    interp_delta = np.zeros_like(interp_win)
+    interp_delta[:-1] = np.diff(interp_win)
+
+    # Construct 2d views of the data with the resampling axis on the first dimension
+    x_2d = x.swapaxes(0, axis).reshape((x.shape[axis], -1))
+    y_2d = y.swapaxes(0, axis).reshape((y.shape[axis], -1))
+    interp1_f(x_2d, y_2d, t_out, interp_win, interp_delta, precision)
 
     return y
