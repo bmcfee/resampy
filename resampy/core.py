@@ -51,6 +51,8 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
 
     Examples
     --------
+    >>> import resampy
+    >>> np.set_printoptions(precision=3, suppress=True)
     >>> # Generate a sine wave at 440 Hz for 5 seconds
     >>> sr_orig = 44100.0
     >>> x = np.sin(2 * np.pi * 440.0 / sr_orig * np.arange(5 * sr_orig))
@@ -58,25 +60,26 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
     array([ 0.   ,  0.063, ..., -0.125, -0.063])
     >>> # Resample to 22050 with default parameters
     >>> resampy.resample(x, sr_orig, 22050)
-    array([ 0.011,  0.123, ..., -0.193, -0.103])
+    array([ 0.011,  0.123,  0.249, ..., -0.366, -0.249, -0.123])
     >>> # Resample using the fast (low-quality) filter
     >>> resampy.resample(x, sr_orig, 22050, filter='kaiser_fast')
-    array([ 0.013,  0.121, ..., -0.189, -0.102])
+    array([ 0.013,  0.121,  0.251, ..., -0.366, -0.251, -0.121])
     >>> # Resample using a high-quality filter
     >>> resampy.resample(x, sr_orig, 22050, filter='kaiser_best')
-    array([ 0.011,  0.123, ..., -0.193, -0.103])
+    array([ 0.011,  0.123,  0.249, ..., -0.366, -0.249, -0.123])
     >>> # Resample using a Hann-windowed sinc filter
+    >>> import scipy.signal
     >>> resampy.resample(x, sr_orig, 22050, filter='sinc_window',
     ...                  window=scipy.signal.hann)
-    array([ 0.011,  0.123, ..., -0.193, -0.103])
+    array([ 0.011,  0.123,  0.25 , ..., -0.366, -0.25 , -0.123])
 
     >>> # Generate stereo data
-    >>> x_right = np.sin(2 * np.pi * 880.0 / sr_orig * np.arange(len(x)))])
+    >>> x_right = np.sin(2 * np.pi * 880.0 / sr_orig * np.arange(len(x)))
     >>> x_stereo = np.stack([x, x_right])
     >>> x_stereo.shape
     (2, 220500)
     >>> # Resample along the time axis (1)
-    >>> y_stereo = resampy.resample(x, sr_orig, 22050, axis=1)
+    >>> y_stereo = resampy.resample(x_stereo, sr_orig, 22050, axis=1)
     >>> y_stereo.shape
     (2, 110250)
     '''
