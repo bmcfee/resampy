@@ -22,11 +22,11 @@ def test_shape(axis):
 
 
 @pytest.mark.parametrize('axis', [0, 1, 2])
-def test_interp1_shape(axis):
+def test_resample_nu_shape(axis):
     sr_orig = 100
     X = np.random.randn(sr_orig, sr_orig, sr_orig)
     t = np.arange(2 * X.shape[axis] - 1) / 2
-    Y = resampy.interp1(X, t, axis=axis)
+    Y = resampy.resample_nu(X, t, axis=axis)
 
     target_shape = list(X.shape)
     target_shape[axis] = len(t)
@@ -72,11 +72,11 @@ def test_dtype(dtype):
 
 @pytest.mark.parametrize('dtype', [np.float32, np.float64,
                                    np.int16, np.int32, np.int64])
-def test_interp1_dtype(dtype):
+def test_resample_nu_dtype(dtype):
     x = np.random.randn(100).astype(dtype)
     t = np.arange(2 * len(x) - 1) / 2
 
-    y = resampy.interp1(x, t)
+    y = resampy.resample_nu(x, t)
 
     assert x.dtype == y.dtype
 
@@ -96,11 +96,11 @@ def test_short_signal():
 
 
 @pytest.mark.xfail(raises=ValueError)
-def test_interp1_short_signal():
+def test_resample_nu_short_signal():
 
     x = np.zeros(2)
     t = np.asarray([])
-    resampy.interp1(x, t)
+    resampy.resample_nu(x, t)
 
 
 def test_good_window():
@@ -129,11 +129,11 @@ def test_contiguity(order, shape, axis):
 @pytest.mark.parametrize('order', ['C', 'F'])
 @pytest.mark.parametrize('shape', [(50,), (10, 50), (10, 25, 50)])
 @pytest.mark.parametrize('axis', [0, -1])
-def test_interp1_contiguity(order, shape, axis):
+def test_resample_nu_contiguity(order, shape, axis):
 
     x = np.zeros(shape, dtype=np.float, order=order)
     t = np.arange(x.shape[axis] * 2 - 1) / 2
-    y = resampy.interp1(x, t, axis=axis)
+    y = resampy.resample_nu(x, t, axis=axis)
 
     assert x.flags['C_CONTIGUOUS'] == y.flags['C_CONTIGUOUS']
     assert x.flags['F_CONTIGUOUS'] == y.flags['F_CONTIGUOUS']
@@ -143,8 +143,8 @@ def test_interp1_contiguity(order, shape, axis):
 @pytest.mark.parametrize('shape', [(50,), (10, 50), (10, 25, 50)])
 @pytest.mark.parametrize('axis', [0, -1])
 @pytest.mark.parametrize('domain', [(0, 100), (-1, 5)])
-def test_interp1_domain(shape, axis, domain):
+def test_resample_nu_domain(shape, axis, domain):
 
     x = np.zeros(shape, dtype=np.float)
     t = np.linspace(*domain, num=10, endpoint=True)
-    resampy.interp1(x, t, axis=axis)
+    resampy.resample_nu(x, t, axis=axis)

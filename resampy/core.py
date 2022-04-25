@@ -6,9 +6,9 @@ import numpy as np
 
 from .filters import get_filter
 
-from .interpn import resample_f, interp1_f
+from .interpn import resample_f
 
-__all__ = ['resample', 'interp1']
+__all__ = ['resample', 'resample_nu']
 
 
 def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
@@ -120,12 +120,17 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
     # Construct 2d views of the data with the resampling axis on the first dimension
     x_2d = x.swapaxes(0, axis).reshape((x.shape[axis], -1))
     y_2d = y.swapaxes(0, axis).reshape((y.shape[axis], -1))
-    resample_f(x_2d, y_2d, sample_ratio, interp_win, interp_delta, precision)
+
+    scale = min(1.0, sample_ratio)
+    time_increment = 1./sample_ratio
+    t_out = np.arange(shape[axis]) * time_increment
+
+    resample_f(x_2d, y_2d, t_out, interp_win, interp_delta, precision, scale)
 
     return y
 
 
-def interp1(x, t_out, axis=-1, filter='kaiser_best', **kwargs):
+def resample_nu(x, t_out, axis=-1, filter='kaiser_best', **kwargs):
     '''Interpolate a signal x at specified positions (t_out) along a given axis.
 
     Parameters
@@ -161,7 +166,7 @@ def interp1(x, t_out, axis=-1, filter='kaiser_best', **kwargs):
     -----
     Differently form the `resample` function the filter `rolloff`
     is not automatically adapted in case of subsampling.
-    For this reason results obtained with the `interp1` could be slightly
+    For this reason results obtained with the `resample_nu` could be slightly
     different form the ones obtained with `resample` if the filter
     parameters are not carefully set by the user.
 
@@ -181,18 +186,18 @@ def interp1(x, t_out, axis=-1, filter='kaiser_best', **kwargs):
     >>> t_new = np.arange(5 * sr_new) / sr_new
     >>> # Normalize the locations of new sampls
     >>> t_new = (t_new - t[0]) / (t[1] - t[0])
-    >>> resampy.interp1(x, t_new)
+    >>> resampy.resample_nu(x, t_new)
     array([ 0.001,  0.126,  0.249, ..., -0.368, -0.249, -0.126])
     >>> # Resample using the fast (low-quality) filter
-    >>> resampy.interp1(x, t_new, filter='kaiser_fast')
+    >>> resampy.resample_nu(x, t_new, filter='kaiser_fast')
     array([ 0.002,  0.127,  0.249, ..., -0.367, -0.249, -0.127])
     >>> # Resample using a high-quality filter
-    >>> resampy.interp1(x, t_new, filter='kaiser_best')
+    >>> resampy.resample_nu(x, t_new, filter='kaiser_best')
     array([ 0.001,  0.126,  0.249, ..., -0.368, -0.249, -0.126])
     >>> # Resample using a Hann-windowed sinc filter
     >>> import scipy.signal
-    >>> resampy.interp1(x, t_new, filter='sinc_window',
-    ...                 window=scipy.signal.hann)
+    >>> resampy.resample_nu(x, t_new, filter='sinc_window',
+    ...                     window=scipy.signal.hann)
     array([ 0.001,  0.126,  0.249, ..., -0.368, -0.249, -0.126])
 
     >>> # Generate stereo data
@@ -201,7 +206,7 @@ def interp1(x, t_out, axis=-1, filter='kaiser_best', **kwargs):
     >>> x_stereo.shape
     (2, 220500)
     >>> # Resample along the time axis (1)
-    >>> y_stereo = resampy.interp1(x_stereo, t_new, axis=1)
+    >>> y_stereo = resampy.resample_nu(x_stereo, t_new, axis=1)
     >>> y_stereo.shape
     (2, 110250)
     '''
@@ -238,6 +243,6 @@ def interp1(x, t_out, axis=-1, filter='kaiser_best', **kwargs):
     # Construct 2d views of the data with the resampling axis on the first dimension
     x_2d = x.swapaxes(0, axis).reshape((x.shape[axis], -1))
     y_2d = y.swapaxes(0, axis).reshape((y.shape[axis], -1))
-    interp1_f(x_2d, y_2d, t_out, interp_win, interp_delta, precision)
+    resample_f(x_2d, y_2d, t_out, interp_win, interp_delta, precision)
 
     return y

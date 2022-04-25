@@ -60,7 +60,7 @@ def test_quality_sweep(sr_orig, sr_new, fil, rms):
     'fil,rms',
     [('sinc_window', 1e-6), ('kaiser_fast', 1e-4), ('kaiser_best', 1e-7)]
 )
-def test_interp1_quality_sine(sr_orig, sr_new, fil, rms):
+def test_resample_nu_quality_sine(sr_orig, sr_new, fil, rms):
     FREQ = 512.0
     DURATION = 2.0
 
@@ -70,7 +70,7 @@ def test_interp1_quality_sine(sr_orig, sr_new, fil, rms):
     dt = t_in[1] - t_in[0]
     t = (t_out - t_in[0]) / dt
 
-    y_pred = resampy.interp1(x, t[:-1], filter=fil)
+    y_pred = resampy.resample_nu(x, t[:-1], filter=fil)
 
     idx = slice(sr_new // 2, - sr_new//2)
 
@@ -83,7 +83,7 @@ def test_interp1_quality_sine(sr_orig, sr_new, fil, rms):
     'fil,rms',
     [('sinc_window', 1e-1), ('kaiser_fast', 1e-1), ('kaiser_best', 1e-1)]
 )
-def test_interp1_quality_sweep(sr_orig, sr_new, fil, rms):
+def test_resample_nu_quality_sweep(sr_orig, sr_new, fil, rms):
     FREQ = 8192
     DURATION = 5.0
     x, t_in = make_sweep(FREQ, sr_orig, DURATION)
@@ -92,7 +92,7 @@ def test_interp1_quality_sweep(sr_orig, sr_new, fil, rms):
     dt = t_in[1] - t_in[0]
     t = (t_out - t_in[0]) / dt
 
-    y_pred = resampy.interp1(x, t[:-1], filter=fil)
+    y_pred = resampy.resample_nu(x, t[:-1], filter=fil)
 
     idx = slice(sr_new // 2, - sr_new//2)
 
