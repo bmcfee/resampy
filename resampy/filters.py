@@ -13,14 +13,17 @@ high-quality or fast calculation:
         and a roll-off frequency of Nyquist * 0.85.
 
 These filters can be used by calling `resample` as follows:
-    >>> resampy.resample(x, sr_orig, sr_new, filter='kaiser_best')  # High-quality
-    >>> resampy.resample(x, sr_orig, sr_new, filter='kaiser_fast')  # Fast calculation
+
+    >>> # High-quality
+    >>> resampy.resample(x, sr_orig, sr_new, filter='kaiser_best')  # doctest: +SKIP
+    >>> # Fast calculation
+    >>> resampy.resample(x, sr_orig, sr_new, filter='kaiser_fast')  # doctest: +SKIP
 
 
 It is also possible to construct custom filters as follows:
 
     >>> resampy.resample(x, sr_orig, sr_new, filter='sinc_window',
-    ...                  **kwargs)
+    ...                  **kwargs)                                  # doctest: +SKIP
 
 where ``**kwargs`` are additional parameters to `resampy.filters.sinc_window`_.
 
@@ -76,8 +79,10 @@ def sinc_window(num_zeros=64, precision=9, window=None, rolloff=0.945):
 
     Examples
     --------
+    >>> import resampy
+    >>> np.set_printoptions(threshold=5, suppress=False)
     >>> # A filter with 10 zero-crossings, 32 samples per crossing, and a
-    ... # Hann window for tapering.
+    >>> # Hann window for tapering.
     >>> halfwin, prec, rolloff = resampy.filters.sinc_window(num_zeros=10, precision=5,
     ...                                                      window=scipy.signal.hann)
     >>> halfwin
@@ -90,7 +95,7 @@ def sinc_window(num_zeros=64, precision=9, window=None, rolloff=0.945):
     >>> # Or using sinc-window filter construction directly in resample
     >>> y = resampy.resample(x, sr_orig, sr_new, filter='sinc_window',
     ...                      num_zeros=10, precision=5,
-    ...                      window=scipy.signal.hann)
+    ...                      window=scipy.signal.hann)              # doctest: +SKIP
     '''
 
     if window is None:
