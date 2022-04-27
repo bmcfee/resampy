@@ -184,7 +184,7 @@ def resample_nu(x, t_out, axis=-1, filter='kaiser_best', **kwargs):
     >>> # Resample to 22050 with default parameters
     >>> sr_new = 22050.0
     >>> t_new = np.arange(5 * sr_new) / sr_new
-    >>> # Normalize the locations of new sampls
+    >>> # Normalize the locations of new samples
     >>> t_new = (t_new - t[0]) / (t[1] - t[0])
     >>> resampy.resample_nu(x, t_new)
     array([ 0.001,  0.126,  0.249, ..., -0.368, -0.249, -0.126])
