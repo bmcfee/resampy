@@ -188,6 +188,9 @@ def resample_nu(x, t_out, axis=-1, filter='kaiser_best', **kwargs):
     >>> resampy.resample_nu(x, t_new)
     array([ 0.001,  0.427,  0.76 , ..., -0.3  , -0.372, -0.442])
     '''
+    t_out = np.asarray(t_out)
+    if t_out.ndim != 1:
+        raise ValueError('Invalide t_out shape ({}), 1D array expected'.format(t_out.shape))
     if np.min(t_out) < 0 or np.max(t_out) > x.shape[axis] - 1:
         raise ValueError('Output domain [{}, {}] exceedes the data domain [0, {}]'.format(
             np.min(t_out), np.max(t_out), x.shape[axis] - 1))

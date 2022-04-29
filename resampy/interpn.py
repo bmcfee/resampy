@@ -4,7 +4,7 @@
 import numba
 
 
-@numba.jit(nopython=True, nogil=True)
+@numba.jit(nopython=True, nogil=True, parallel=True)
 def resample_f(x, y, t_out, interp_win, interp_delta, num_table, scale=1.0):
 
     index_step = int(scale * num_table)
@@ -19,8 +19,11 @@ def resample_f(x, y, t_out, interp_win, interp_delta, num_table, scale=1.0):
     nwin = interp_win.shape[0]
     n_orig = x.shape[0]
     n_channels = y.shape[1]
+    n_out = t_out.shape[0]
 
-    for t, time_register in enumerate(t_out):
+    for t in numba.prange(n_out):
+        time_register = t_out[t]
+
         # Grab the top bits as an index to the input buffer
         n = int(time_register)
 
