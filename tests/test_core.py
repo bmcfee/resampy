@@ -117,7 +117,7 @@ def test_good_window():
 @pytest.mark.parametrize('axis', [0, -1])
 def test_contiguity(order, shape, axis):
 
-    x = np.zeros(shape, dtype=np.float, order=order)
+    x = np.zeros(shape, dtype=np.float64, order=order)
     sr_orig = 1
     sr_new = 2
     y = resampy.resample(x, sr_orig, sr_new, axis=axis)
@@ -131,7 +131,7 @@ def test_contiguity(order, shape, axis):
 @pytest.mark.parametrize('axis', [0, -1])
 def test_resample_nu_contiguity(order, shape, axis):
 
-    x = np.zeros(shape, dtype=np.float, order=order)
+    x = np.zeros(shape, dtype=np.float64, order=order)
     t = np.arange(x.shape[axis] * 2 - 1) / 2
     y = resampy.resample_nu(x, t, axis=axis)
 
@@ -145,6 +145,6 @@ def test_resample_nu_contiguity(order, shape, axis):
 @pytest.mark.parametrize('domain', [(0, 100), (-1, 5)])
 def test_resample_nu_domain(shape, axis, domain):
 
-    x = np.zeros(shape, dtype=np.float)
+    x = np.zeros(shape, dtype=np.float64)
     t = np.linspace(*domain, num=10, endpoint=True)
     resampy.resample_nu(x, t, axis=axis)
