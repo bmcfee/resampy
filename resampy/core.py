@@ -211,10 +211,6 @@ def resample_nu(x, t_out, axis=-1, filter='kaiser_best', **kwargs):
 
     interp_win, precision, _ = get_filter(filter, **kwargs)
 
-    # TODO: check
-    # if sample_ratio < 1:
-    #     interp_win *= sample_ratio
-
     interp_delta = np.zeros_like(interp_win)
     interp_delta[:-1] = np.diff(interp_win)
 
