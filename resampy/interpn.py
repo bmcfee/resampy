@@ -4,7 +4,7 @@
 import numba
 
 
-@numba.jit(nopython=True, nogil=True, parallel=True)
+@numba.jit(nopython=True, nogil=True)
 def resample_f(x, y, t_out, interp_win, interp_delta, num_table, scale=1.0):
 
     index_step = int(scale * num_table)
