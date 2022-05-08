@@ -1,10 +1,17 @@
 #!/usr/bin/env python
 '''Numba implementation of resampler'''
 
+import os
 import numba
 
 
-@numba.jit(nopython=True, nogil=True)
+if os.environ.get('RESAMPY_PARALLEL', '').lower() in {'0', 'off', 'false', 'no'}:
+    _ENABLE_JIT_PARALLEL = False
+else:
+    _ENABLE_JIT_PARALLEL = True
+
+
+@numba.jit(nopython=True, nogil=True, parallel=_ENABLE_JIT_PARALLEL)
 def resample_f(x, y, t_out, interp_win, interp_delta, num_table, scale=1.0):
 
     index_step = int(scale * num_table)
