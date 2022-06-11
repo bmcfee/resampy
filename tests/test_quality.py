@@ -8,12 +8,12 @@ import resampy
 
 
 def make_tone(freq, sr, duration):
-    t = np.arange(int(sr * duration)) / sr
+    t = np.arange(int(sr * duration), dtype=np.float64) / sr
     return np.sin(2 * np.pi * freq * t), t
 
 
 def make_sweep(freq, sr, duration):
-    t = np.arange(int(sr * duration)) / sr
+    t = np.arange(int(sr * duration), dtype=np.float64) / sr
     x = np.sin(np.cumsum(2 * np.pi * np.logspace(np.log2(2.0 / sr),
                                                  np.log2(float(freq) / sr),
                                                  num=int(duration*sr),
@@ -70,6 +70,10 @@ def test_resample_nu_quality_sine(sr_orig, sr_new, fil, rms):
 
     x, t_in = make_tone(FREQ, sr_orig, DURATION)
     y, t_out = make_tone(FREQ, sr_new, DURATION)
+    print()
+    print('x', x)
+    print('y', y)
+    print('t_out', t_out)
 
     y_pred = resampy.resample_nu(x, sr_orig, t_out[:-1], filter=fil)
 
@@ -89,7 +93,7 @@ def test_resample_nu_quality_sweep(sr_orig, sr_new, fil, rms):
     DURATION = 5.0
     x, t_in = make_sweep(FREQ, sr_orig, DURATION)
     y, t_out = make_sweep(FREQ, sr_new, DURATION)
-
+ 
     y_pred = resampy.resample_nu(x, sr_orig, t_out[:-1], filter=fil)
 
     idx = slice(sr_new // 2, - sr_new//2)

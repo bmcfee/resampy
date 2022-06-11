@@ -2,6 +2,8 @@
 # -*- encoding: utf-8 -*-
 '''Core resampling interface'''
 
+from __future__ import division
+
 import numpy as np
 
 from .filters import get_filter
@@ -189,6 +191,9 @@ def resample_nu(x, sr_orig, t_out, axis=-1, filter='kaiser_best', **kwargs):
     >>> resampy.resample_nu(x, sr_orig, t_new)
     array([ 0.001,  0.427,  0.76 , ..., -0.3  , -0.372, -0.442])
     '''
+    if sr_orig <= 0:
+        raise ValueError('Invalid sample rate: sr_orig={}'.format(sr_orig))
+
     t_out = np.asarray(t_out)
     if t_out.ndim != 1:
         raise ValueError('Invalide t_out shape ({}), 1D array expected'.format(t_out.shape))
