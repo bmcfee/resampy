@@ -13,8 +13,12 @@ def make_tone(freq, sr, duration):
 
 
 def make_sweep(freq, sr, duration):
-    t = np.linspace(1, np.log2(float(freq)), num=int(duration*sr), endpoint=True)
-    return np.sin(np.cumsum(2 * np.pi * 2**(t - np.log2(sr)))), t
+    t = np.arange(int(sr * duration)) / sr
+    x = np.sin(np.cumsum(2 * np.pi * np.logspace(np.log2(2.0 / sr),
+                                                 np.log2(float(freq) / sr),
+                                                 num=int(duration*sr),
+                                                 base=2.0)))
+    return x, t
 
 
 @pytest.mark.parametrize('sr_orig,sr_new', [(44100, 22050), (22050, 44100)])
@@ -67,10 +71,7 @@ def test_resample_nu_quality_sine(sr_orig, sr_new, fil, rms):
     x, t_in = make_tone(FREQ, sr_orig, DURATION)
     y, t_out = make_tone(FREQ, sr_new, DURATION)
 
-    dt = t_in[1] - t_in[0]
-    t = (t_out - t_in[0]) / dt
-
-    y_pred = resampy.resample_nu(x, t[:-1], filter=fil)
+    y_pred = resampy.resample_nu(x, sr_orig, t_out[:-1], filter=fil)
 
     idx = slice(sr_new // 2, - sr_new//2)
 
@@ -89,10 +90,7 @@ def test_resample_nu_quality_sweep(sr_orig, sr_new, fil, rms):
     x, t_in = make_sweep(FREQ, sr_orig, DURATION)
     y, t_out = make_sweep(FREQ, sr_new, DURATION)
 
-    dt = t_in[1] - t_in[0]
-    t = (t_out - t_in[0]) / dt
-
-    y_pred = resampy.resample_nu(x, t[:-1], filter=fil)
+    y_pred = resampy.resample_nu(x, sr_orig, t_out[:-1], filter=fil)
 
     idx = slice(sr_new // 2, - sr_new//2)
 

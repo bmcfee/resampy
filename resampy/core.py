@@ -130,7 +130,7 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
     return y
 
 
-def resample_nu(x, t_out, sr_orig=1., axis=-1, filter='kaiser_best', **kwargs):
+def resample_nu(x, sr_orig, t_out, axis=-1, filter='kaiser_best', **kwargs):
     '''Interpolate a signal x at specified positions (t_out) along a given axis.
 
     Parameters
@@ -138,11 +138,11 @@ def resample_nu(x, t_out, sr_orig=1., axis=-1, filter='kaiser_best', **kwargs):
     x : np.ndarray, dtype=np.float*
         The input signal(s) to resample.
 
-    t_out : np.ndarray, dtype=np.float*
-        Normalized position of the output samples.
-
     sr_orig : float
         Sampling rate of the input signal (x).
+
+    t_out : np.ndarray, dtype=np.float*
+        Position of the output samples.
 
     axis : int
         The target axis along which to resample `x`
@@ -186,15 +186,15 @@ def resample_nu(x, t_out, sr_orig=1., axis=-1, filter='kaiser_best', **kwargs):
     array([ 0.   ,  0.063,  0.125, ..., -0.187, -0.125, -0.063])
     >>> # Resample to non-uniform sampling
     >>> t_new = np.log2(1 + t)[::5] - t[0]
-    >>> resampy.resample_nu(x, t_new, sr_orig=sr_orig)
+    >>> resampy.resample_nu(x, sr_orig, t_new)
     array([ 0.001,  0.427,  0.76 , ..., -0.3  , -0.372, -0.442])
     '''
     t_out = np.asarray(t_out)
     if t_out.ndim != 1:
         raise ValueError('Invalide t_out shape ({}), 1D array expected'.format(t_out.shape))
-    if np.min(t_out) < 0 or np.max(t_out) > x.shape[axis] - 1:
+    if np.min(t_out) < 0 or np.max(t_out) > (x.shape[axis] - 1) / sr_orig:
         raise ValueError('Output domain [{}, {}] exceedes the data domain [0, {}]'.format(
-            np.min(t_out), np.max(t_out), x.shape[axis] - 1))
+            np.min(t_out), np.max(t_out), (x.shape[axis] - 1) / sr_orig))
 
     # Set up the output shape
     shape = list(x.shape)

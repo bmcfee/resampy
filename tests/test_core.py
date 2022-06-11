@@ -24,9 +24,10 @@ def test_shape(axis):
 @pytest.mark.parametrize('axis', [0, 1, 2])
 def test_resample_nu_shape(axis):
     sr_orig = 100
+    sr_new = sr_orig // 2
     X = np.random.randn(sr_orig, sr_orig, sr_orig)
-    t = np.arange(2 * X.shape[axis] - 1) / 2
-    Y = resampy.resample_nu(X, t, axis=axis)
+    t = np.arange(X.shape[axis] // 2) / sr_new
+    Y = resampy.resample_nu(X, sr_orig, t, axis=axis)
 
     target_shape = list(X.shape)
     target_shape[axis] = len(t)
@@ -76,7 +77,7 @@ def test_resample_nu_dtype(dtype):
     x = np.random.randn(100).astype(dtype)
     t = np.arange(2 * len(x) - 1) / 2
 
-    y = resampy.resample_nu(x, t)
+    y = resampy.resample_nu(x, 1., t)
 
     assert x.dtype == y.dtype
 
@@ -100,7 +101,7 @@ def test_resample_nu_short_signal():
 
     x = np.zeros(2)
     t = np.asarray([])
-    resampy.resample_nu(x, t)
+    resampy.resample_nu(x, 1., t)
 
 
 def test_good_window():
@@ -133,7 +134,7 @@ def test_resample_nu_contiguity(order, shape, axis):
 
     x = np.zeros(shape, dtype=np.float64, order=order)
     t = np.arange(x.shape[axis] * 2 - 1) / 2
-    y = resampy.resample_nu(x, t, axis=axis)
+    y = resampy.resample_nu(x, 1., t, axis=axis)
 
     assert x.flags['C_CONTIGUOUS'] == y.flags['C_CONTIGUOUS']
     assert x.flags['F_CONTIGUOUS'] == y.flags['F_CONTIGUOUS']
@@ -147,4 +148,4 @@ def test_resample_nu_domain(shape, axis, domain):
 
     x = np.zeros(shape, dtype=np.float64)
     t = np.linspace(*domain, num=10, endpoint=True)
-    resampy.resample_nu(x, t, axis=axis)
+    resampy.resample_nu(x, 1., t, axis=axis)
