@@ -70,10 +70,6 @@ def test_resample_nu_quality_sine(sr_orig, sr_new, fil, rms):
 
     x, t_in = make_tone(FREQ, sr_orig, DURATION)
     y, t_out = make_tone(FREQ, sr_new, DURATION)
-    print()
-    print('x', x)
-    print('y', y)
-    print('t_out', t_out)
 
     y_pred = resampy.resample_nu(x, sr_orig, t_out[:-1], filter=fil)
 
