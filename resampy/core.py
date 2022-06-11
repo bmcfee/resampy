@@ -130,7 +130,7 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
     return y
 
 
-def resample_nu(x, t_out, axis=-1, filter='kaiser_best', **kwargs):
+def resample_nu(x, t_out, sr_orig=1., axis=-1, filter='kaiser_best', **kwargs):
     '''Interpolate a signal x at specified positions (t_out) along a given axis.
 
     Parameters
@@ -140,6 +140,9 @@ def resample_nu(x, t_out, axis=-1, filter='kaiser_best', **kwargs):
 
     t_out : np.ndarray, dtype=np.float*
         Normalized position of the output samples.
+
+    sr_orig : float
+        Sampling rate of the input signal (x).
 
     axis : int
         The target axis along which to resample `x`
@@ -174,7 +177,7 @@ def resample_nu(x, t_out, axis=-1, filter='kaiser_best', **kwargs):
     --------
     >>> import resampy
     >>> np.set_printoptions(precision=3, suppress=True)
-    >>> # Generate a sine wave at 440 Hz for 5 seconds
+    >>> # Generate a sine wave at 100 Hz for 5 seconds
     >>> sr_orig = 100.0
     >>> f0 = 1
     >>> t = np.arange(5 * sr_orig) / sr_orig
@@ -182,10 +185,8 @@ def resample_nu(x, t_out, axis=-1, filter='kaiser_best', **kwargs):
     >>> x
     array([ 0.   ,  0.063,  0.125, ..., -0.187, -0.125, -0.063])
     >>> # Resample to non-uniform sampling
-    >>> t_new = np.log2(1 + t)[::5]
-    >>> # Normalize the locations of new samples
-    >>> t_new = (t_new - t[0]) / (t[1] - t[0])
-    >>> resampy.resample_nu(x, t_new)
+    >>> t_new = np.log2(1 + t)[::5] - t[0]
+    >>> resampy.resample_nu(x, t_new, sr_orig=sr_orig)
     array([ 0.001,  0.427,  0.76 , ..., -0.3  , -0.372, -0.442])
     '''
     t_out = np.asarray(t_out)
@@ -220,6 +221,11 @@ def resample_nu(x, t_out, axis=-1, filter='kaiser_best', **kwargs):
     # Construct 2d views of the data with the resampling axis on the first dimension
     x_2d = x.swapaxes(0, axis).reshape((x.shape[axis], -1))
     y_2d = y.swapaxes(0, axis).reshape((y.shape[axis], -1))
+
+    # Normalize t_out
+    if sr_orig != 1.:
+        t_out = t_out * sr_orig
+
     resample_f(x_2d, y_2d, t_out, interp_win, interp_delta, precision)
 
     return y
