@@ -35,7 +35,7 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
 
         By default, uses the `kaiser_best` (pre-computed filter).
 
-    kwargs
+    **kwargs
         additional keyword arguments provided to the specified filter
 
     Returns
@@ -47,7 +47,6 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
     ------
     ValueError
         if `sr_orig` or `sr_new` is not positive
-
     TypeError
         if the input signal `x` has an unsupported data type.
 
@@ -124,7 +123,7 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
     y_2d = y.swapaxes(0, axis).reshape((y.shape[axis], -1))
 
     scale = min(1.0, sample_ratio)
-    time_increment = 1./sample_ratio
+    time_increment = 1. / sample_ratio
     t_out = np.arange(shape[axis]) * time_increment
 
     resample_f(x_2d, y_2d, t_out, interp_win, interp_delta, precision, scale)
@@ -154,7 +153,7 @@ def resample_nu(x, sr_orig, t_out, axis=-1, filter='kaiser_best', **kwargs):
 
         By default, uses the `kaiser_best` (pre-computed filter).
 
-    kwargs
+    **kwargs
         additional keyword arguments provided to the specified filter
 
     Returns
