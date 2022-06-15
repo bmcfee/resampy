@@ -48,13 +48,10 @@ def sinc_window(num_zeros=64, precision=9, window=None, rolloff=0.945):
     ----------
     num_zeros : int > 0
         The number of zero-crossings to retain in the sinc filter
-
     precision : int > 0
         The number of filter coefficients to retain for each zero-crossing
-
     window : callable
         The window function.  By default, uses Blackman-Harris.
-
     rolloff : float > 0
         The roll-off frequency (as a fraction of nyquist)
 
@@ -62,10 +59,8 @@ def sinc_window(num_zeros=64, precision=9, window=None, rolloff=0.945):
     -------
     interp_window: np.ndarray [shape=(num_zeros * num_table + 1)]
         The interpolation window (right-hand side)
-
     num_bits: int
         The number of bits of precision to use in the filter table
-
     rolloff : float > 0
         The roll-off frequency of the filter, as a fraction of Nyquist
 
@@ -144,14 +139,15 @@ def get_filter(name_or_function, **kwargs):
             - 'kaiser_fast'
             - 'kaiser_best'
 
+    **kwargs
+        Additional keyword arguments passed to `name_or_function` (if callable)
+
     Returns
     -------
     half_window : np.ndarray
         The right wing of the interpolation filter
-
     precision : int > 0
         The number of samples between zero-crossings of the filter
-
     rolloff : float > 0
         The roll-off frequency of the filter as a fraction of Nyquist
 
@@ -184,10 +180,8 @@ def load_filter(filter_name):
     -------
     half_window : np.ndarray
         The right wing of the interpolation filter
-
     precision : int > 0
-        The number of samples between zero-crossings of the fitler
-
+        The number of samples between zero-crossings of the filter
     rolloff : float > 0
         The roll-off frequency of the filter, as a fraction of Nyquist
     '''
