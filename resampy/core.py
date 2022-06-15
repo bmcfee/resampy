@@ -123,7 +123,7 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
     y_2d = y.swapaxes(0, axis).reshape((y.shape[axis], -1))
 
     scale = min(1.0, sample_ratio)
-    time_increment = 1./sample_ratio
+    time_increment = 1. / sample_ratio
     t_out = np.arange(shape[axis]) * time_increment
 
     resample_f(x_2d, y_2d, t_out, interp_win, interp_delta, precision, scale)

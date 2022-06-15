@@ -57,7 +57,7 @@ def resample_f(x, y, t_out, interp_win, interp_delta, num_table, scale=1.0):
         eta = index_frac - offset
 
         # Compute the right wing of the filter response
-        k_max = min(n_orig - n - 1, (nwin - offset)//index_step)
+        k_max = min(n_orig - n - 1, (nwin - offset) // index_step)
         for k in range(k_max):
             weight = (interp_win[offset + k * index_step] + eta * interp_delta[offset + k * index_step])
             for j in range(n_channels):
