@@ -149,3 +149,15 @@ def test_resample_nu_domain(shape, axis, domain):
     x = np.zeros(shape, dtype=np.float64)
     t = np.linspace(*domain, num=10, endpoint=True)
     resampy.resample_nu(x, 1., t, axis=axis)
+
+
+def test_resample_matched():
+    x = np.random.randn(100)
+    y = resampy.resample(x, 1, 1)
+
+    # All values should match
+    assert np.allclose(x, y)
+    # y should own the data
+    assert y.flags['OWNDATA']
+    # x and y are distinct objects
+    assert y is not x
