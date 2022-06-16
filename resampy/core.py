@@ -27,6 +27,9 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
     sr_new : int > 0
         The target sampling rate of the output signal(s)
 
+        If `sr_new == sr_orig`, then a copy of `x` is returned with no
+        interpolation performed.
+
     axis : int
         The target axis along which to resample `x`
 
@@ -90,6 +93,10 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
 
     if sr_new <= 0:
         raise ValueError('Invalid sample rate: sr_new={}'.format(sr_new))
+
+    if sr_orig == sr_new:
+        # If the output rate matches, return a copy
+        return x.copy()
 
     sample_ratio = float(sr_new) / sr_orig
 
