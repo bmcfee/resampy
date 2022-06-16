@@ -158,6 +158,6 @@ def test_resample_matched():
     # All values should match
     assert np.allclose(x, y)
     # y should own the data
-    assert y.FLAGS['owndata']
+    assert y.flags['OWNDATA']
     # x and y are distinct objects
     assert y is not x
