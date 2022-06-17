@@ -21,8 +21,7 @@ setup(
     install_requires=[
         'numpy>=1.10',
         'scipy>=0.13',
-        'numba>=0.32',
-        'six>=1.3'],
+        'numba>=0.32'],
     extras_require={
         'docs': [
             'sphinx!=1.3.1',  # autodoc was broken in 1.3.1
@@ -39,10 +38,7 @@ setup(
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "Topic :: Multimedia :: Sound/Audio :: Analysis",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
