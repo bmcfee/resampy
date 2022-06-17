@@ -19,7 +19,7 @@ setup(
     packages=['resampy'],
     package_data={'resampy': ['data/*']},
     install_requires=[
-        'numpy>=1.10',
+        'numpy>=1.17',
         'scipy>=0.13',
         'numba>=0.32'],
     extras_require={

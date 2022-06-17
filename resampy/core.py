@@ -107,13 +107,7 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
                          'resample from {}->{}'.format(x.shape[axis], sr_orig, sr_new))
 
     # Preserve contiguity of input (if it exists)
-    # If not, revert to C-contiguity by default
-    if x.flags['F_CONTIGUOUS']:
-        order = 'F'
-    else:
-        order = 'C'
-
-    y = np.zeros(shape, dtype=x.dtype, order=order)
+    y = np.zeros_like(x, shape=shape)
 
     interp_win, precision, _ = get_filter(filter, **kwargs)
 
@@ -123,15 +117,12 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
     interp_delta = np.zeros_like(interp_win)
     interp_delta[:-1] = np.diff(interp_win)
 
-    # Construct 2d views of the data with the resampling axis on the first dimension
-    x_2d = x.swapaxes(0, axis).reshape((x.shape[axis], -1))
-    y_2d = y.swapaxes(0, axis).reshape((y.shape[axis], -1))
-
     scale = min(1.0, sample_ratio)
     time_increment = 1. / sample_ratio
     t_out = np.arange(shape[axis]) * time_increment
 
-    resample_f(x_2d, y_2d, t_out, interp_win, interp_delta, precision, scale)
+    resample_f(x.swapaxes(0, axis), y.swapaxes(0, axis),
+               t_out, interp_win, interp_delta, precision, scale)
 
     return y
 
@@ -213,28 +204,17 @@ def resample_nu(x, sr_orig, t_out, axis=-1, filter='kaiser_best', **kwargs):
         raise ValueError('Input signal length={} is too small to '
                          'resample from {}->{}'.format(x.shape[axis], x.shape[axis], len(t_out)))
 
-    # Preserve contiguity of input (if it exists)
-    # If not, revert to C-contiguity by default
-    if x.flags['F_CONTIGUOUS']:
-        order = 'F'
-    else:
-        order = 'C'
-
-    y = np.zeros(shape, dtype=x.dtype, order=order)
+    y = np.zeros_like(x, shape=shape)
 
     interp_win, precision, _ = get_filter(filter, **kwargs)
 
     interp_delta = np.zeros_like(interp_win)
     interp_delta[:-1] = np.diff(interp_win)
 
-    # Construct 2d views of the data with the resampling axis on the first dimension
-    x_2d = x.swapaxes(0, axis).reshape((x.shape[axis], -1))
-    y_2d = y.swapaxes(0, axis).reshape((y.shape[axis], -1))
-
     # Normalize t_out
     if sr_orig != 1.:
         t_out = t_out * sr_orig
 
-    resample_f(x_2d, y_2d, t_out, interp_win, interp_delta, precision)
+    resample_f(x.swapaxes(0, axis), y.swapaxes(0, axis), t_out, interp_win, interp_delta, precision)
 
     return y
