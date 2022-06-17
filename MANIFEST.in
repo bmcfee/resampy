@@ -1,4 +1,0 @@
-include *.md
-include *.py
-recursive-include resampy *.c *.py *.pyx *.pxd *.npz
-include LICENSE
