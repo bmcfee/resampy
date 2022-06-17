@@ -161,3 +161,16 @@ def test_resample_matched():
     assert y.flags['OWNDATA']
     # x and y are distinct objects
     assert y is not x
+
+
+def test_resample_axis():
+    # derived from https://github.com/bmcfee/resampy/issues/73
+
+    rand_arr = np.abs(np.random.rand(3, 4, 5, 100))
+
+    resampled_arr = resampy.resample(rand_arr, 100, 24, axis=3)
+
+    resampled_t_arr = resampy.resample(np.transpose(rand_arr), 100, 24, axis=0)
+
+    assert np.allclose(resampled_arr, np.transpose(resampled_t_arr))
+    assert (resampled_arr**2).sum() > 0
