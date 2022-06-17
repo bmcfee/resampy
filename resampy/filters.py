@@ -29,7 +29,6 @@ where ``**kwargs`` are additional parameters to `resampy.filters.sinc_window`_.
 
 '''
 
-import scipy.signal
 import numpy as np
 import os
 import pkg_resources
@@ -50,7 +49,7 @@ def sinc_window(num_zeros=64, precision=9, window=None, rolloff=0.945):
     precision : int > 0
         The number of filter coefficients to retain for each zero-crossing
     window : callable
-        The window function.  By default, uses Blackman-Harris.
+        The window function.  By default, uses a Hann window.
     rolloff : float > 0
         The roll-off frequency (as a fraction of nyquist)
 
@@ -73,6 +72,7 @@ def sinc_window(num_zeros=64, precision=9, window=None, rolloff=0.945):
 
     Examples
     --------
+    >>> import scipy
     >>> import resampy
     >>> np.set_printoptions(threshold=5, suppress=False)
     >>> # A filter with 10 zero-crossings, 32 samples per crossing, and a
@@ -93,7 +93,7 @@ def sinc_window(num_zeros=64, precision=9, window=None, rolloff=0.945):
     '''
 
     if window is None:
-        window = scipy.signal.blackmanharris
+        window = np.hanning
     elif not callable(window):
         raise TypeError('window must be callable, not type(window)={}'.format(type(window)))
 

@@ -19,7 +19,6 @@ def resample_f(x, y, t_out, interp_win, interp_delta, num_table, scale=1.0):
 
     nwin = interp_win.shape[0]
     n_orig = x.shape[0]
-    n_channels = y.shape[1]
     n_out = t_out.shape[0]
 
     for t in numba.prange(n_out):
@@ -43,8 +42,7 @@ def resample_f(x, y, t_out, interp_win, interp_delta, num_table, scale=1.0):
         for i in range(i_max):
 
             weight = (interp_win[offset + i * index_step] + eta * interp_delta[offset + i * index_step])
-            for j in range(n_channels):
-                y[t, j] += weight * x[n - i, j]
+            y[t] += weight * x[n-i]
 
         # Invert P
         frac = scale - frac
@@ -60,5 +58,4 @@ def resample_f(x, y, t_out, interp_win, interp_delta, num_table, scale=1.0):
         k_max = min(n_orig - n - 1, (nwin - offset) // index_step)
         for k in range(k_max):
             weight = (interp_win[offset + k * index_step] + eta * interp_delta[offset + k * index_step])
-            for j in range(n_channels):
-                y[t, j] += weight * x[n + k + 1, j]
+            y[t] += weight * x[n + k + 1]
