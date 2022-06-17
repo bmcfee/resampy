@@ -20,8 +20,7 @@ setup(
     package_data={'resampy': ['data/*']},
     install_requires=[
         'numpy>=1.17',
-        'scipy>=0.13',
-        'numba>=0.32'],
+        'numba>=0.41'],
     extras_require={
         'docs': [
             'sphinx!=1.3.1',  # autodoc was broken in 1.3.1
@@ -30,6 +29,7 @@ setup(
         'tests': [
             'pytest < 8',
             'pytest-cov',
+            'scipy>=1.0',
         ],
     },
     classifiers=[
