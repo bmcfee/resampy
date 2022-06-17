@@ -2,8 +2,6 @@
 # -*- encoding: utf-8 -*-
 '''Core resampling interface'''
 
-from __future__ import division
-
 import numpy as np
 
 from .filters import get_filter

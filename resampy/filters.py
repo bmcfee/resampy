@@ -33,7 +33,6 @@ import scipy.signal
 import numpy as np
 import os
 import pkg_resources
-import six
 import sys
 
 FILTER_FUNCTIONS = ['sinc_window']
@@ -95,7 +94,7 @@ def sinc_window(num_zeros=64, precision=9, window=None, rolloff=0.945):
 
     if window is None:
         window = scipy.signal.blackmanharris
-    elif not six.callable(window):
+    elif not callable(window):
         raise TypeError('window must be callable, not type(window)={}'.format(type(window)))
 
     if not 0 < rolloff <= 1:
@@ -158,7 +157,7 @@ def get_filter(name_or_function, **kwargs):
     '''
     if name_or_function in FILTER_FUNCTIONS:
         return getattr(sys.modules[__name__], name_or_function)(**kwargs)
-    elif six.callable(name_or_function):
+    elif callable(name_or_function):
         return name_or_function(**kwargs)
     else:
         try:
