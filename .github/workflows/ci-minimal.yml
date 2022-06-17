@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and lint with a variety of Python versions
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: CI
+name: CI-minimal
 
 on:
   push:
@@ -19,12 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
-        include:
-          - os: windows-latest
-            python-version: "3.10"
-          - os: macos-latest
-            python-version: "3.10"
+        python-version: ["3.6"]
 
     steps:
     - uses: actions/checkout@v2
@@ -38,8 +33,9 @@ jobs:
     - name: Install dependencies
       shell: bash -l {0}
       run: |
-        mamba install typing_extensions!=4.2
-        mamba install pip numpy scipy numba pytest pytest-cov pytest-doctestplus
+        mamba install typing_extensions!=4.2 pytest
+        mamba install pip numpy==1.17 scipy==0.13 numba==0.32
+
     - name: Install
       shell: bash -l {0}
       run: |
@@ -48,14 +44,3 @@ jobs:
       shell: bash -l {0}
       run: |
         python -m pytest
-        python -m pytest --doctest-only
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
-      with:
-        files: ./coverage.xml
-        directory: ./coverage/reports/
-        flags: unittests
-        env_vars: OS,PYTHON
-        name: codecov-umbrella
-        fail_ci_if_error: true
-        verbose: true
