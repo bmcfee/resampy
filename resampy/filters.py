@@ -25,7 +25,7 @@ It is also possible to construct custom filters as follows:
     >>> resampy.resample(x, sr_orig, sr_new, filter='sinc_window',
     ...                  **kwargs)                                  # doctest: +SKIP
 
-where ``**kwargs`` are additional parameters to `resampy.filters.sinc_window`_.
+where ``**kwargs`` are additional parameters to `sinc_window`.
 
 '''
 
