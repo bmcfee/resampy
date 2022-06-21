@@ -5,7 +5,7 @@ Monophonic resampling
 
 The following code block demonstrates how to resample an audio signal.
 
-We use `librosa <https://bmcfee.github.io/librosa/>`_ for loading the audio,
+We use `librosa <https://librosa.org/>`_ for loading the audio,
 but this is purely for ease of demonstration.  `resampy` does not depend on `librosa`.
 
 .. code-block:: python
@@ -15,7 +15,7 @@ but this is purely for ease of demonstration.  `resampy` does not depend on `lib
     import resampy
 
     # Load in librosa's example audio file at its native sampling rate
-    x, sr_orig = librosa.load(librosa.util.example_audio_file(), sr=None)
+    x, sr_orig = librosa.load(librosa.ex('trumpet'), sr=None)
 
     # x is now a 1-d numpy array, with `sr_orig` audio samples per second
 
@@ -39,7 +39,7 @@ resampling, as demonstrated below.
 
     # Load in librosa's example audio file at its native sampling rate.
     # This time, also disable the stereo->mono downmixing
-    x, sr_orig = librosa.load(librosa.util.example_audio_file(), sr=None, mono=False)
+    x, sr_orig = librosa.load(librosa.ex('trumpet', hq=True), sr=None, mono=False)
 
     # x is now a 2-d numpy array, with `sr_orig` audio samples per second
     # The first dimension of x indexes the channels, the second dimension indexes
@@ -85,7 +85,7 @@ resampy allows you to control the design of the filters used in resampling opera
     import resampy
 
     # Load in some audio
-    x, sr_orig = librosa.load(librosa.util.example_audio_file(), sr=None, mono=False)
+    x, sr_orig = librosa.load(librosa.ex('trumpet'), sr=None, mono=False)
 
     # Resample to 22050Hz using a Hann-windowed sinc-filter
     y = resampy.resample(x, sr_orig, sr_new, filter='sinc_window', window=scipy.signal.hann)
