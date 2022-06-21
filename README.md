@@ -4,7 +4,7 @@
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/resampy/badges/version.svg)](https://anaconda.org/conda-forge/resampy)
 [![CI](https://github.com/bmcfee/resampy/actions/workflows/ci.yml/badge.svg)](https://github.com/bmcfee/resampy/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/bmcfee/resampy/branch/main/graph/badge.svg?token=o6a0xO89rz)](https://codecov.io/gh/bmcfee/resampy)
-[![Documentation Status](https://readthedocs.org/projects/resampy/badge/?version=latest)](http://resampy.readthedocs.org/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/resampy/badge/?version=stable)](https://resampy.readthedocs.io/en/stable/?badge=stable)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.596633.svg)](https://doi.org/10.5281/zenodo.596633)
 
 Efficient sample rate conversion in Python.
