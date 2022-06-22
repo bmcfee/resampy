@@ -6,12 +6,12 @@ import numpy as np
 
 from .filters import get_filter
 
-from .interpn import resample_f
+from .interpn import resample_f_s, resample_f_p
 
 __all__ = ['resample', 'resample_nu']
 
 
-def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
+def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', parallel=True, **kwargs):
     '''Resample a signal x from sr_orig to sr_new along a given axis.
 
     Parameters
@@ -35,6 +35,11 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
         The resampling filter to use.
 
         By default, uses the `kaiser_best` (pre-computed filter).
+    
+    parallel : optional, bool
+        Enable/disable parallel computation exploiting multi-threading.
+
+        Default: True.
 
     **kwargs
         additional keyword arguments provided to the specified filter
@@ -121,13 +126,17 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', **kwargs):
     time_increment = 1. / sample_ratio
     t_out = np.arange(shape[axis]) * time_increment
 
-    resample_f(x.swapaxes(0, axis), y.swapaxes(0, axis),
-               t_out, interp_win, interp_delta, precision, scale)
+    if parallel:
+        resample_f_p(x.swapaxes(0, axis), y.swapaxes(0, axis),
+                     t_out, interp_win, interp_delta, precision, scale)
+    else:
+        resample_f_s(x.swapaxes(0, axis), y.swapaxes(0, axis),
+                     t_out, interp_win, interp_delta, precision, scale)
 
     return y
 
 
-def resample_nu(x, sr_orig, t_out, axis=-1, filter='kaiser_best', **kwargs):
+def resample_nu(x, sr_orig, t_out, axis=-1, filter='kaiser_best', parallel=True, **kwargs):
     '''Interpolate a signal x at specified positions (t_out) along a given axis.
 
     Parameters
@@ -148,6 +157,11 @@ def resample_nu(x, sr_orig, t_out, axis=-1, filter='kaiser_best', **kwargs):
         The resampling filter to use.
 
         By default, uses the `kaiser_best` (pre-computed filter).
+
+    parallel : optional, bool
+        Enable/disable parallel computation exploiting multi-threading.
+
+        Default: True.
 
     **kwargs
         additional keyword arguments provided to the specified filter
@@ -215,6 +229,9 @@ def resample_nu(x, sr_orig, t_out, axis=-1, filter='kaiser_best', **kwargs):
     if sr_orig != 1.:
         t_out = t_out * sr_orig
 
-    resample_f(x.swapaxes(0, axis), y.swapaxes(0, axis), t_out, interp_win, interp_delta, precision)
+    if parallel:
+        resample_f_p(x.swapaxes(0, axis), y.swapaxes(0, axis), t_out, interp_win, interp_delta, precision)
+    else:
+        resample_f_s(x.swapaxes(0, axis), y.swapaxes(0, axis), t_out, interp_win, interp_delta, precision)
 
     return y
