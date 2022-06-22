@@ -1,0 +1,2 @@
+ignore:
+    resampy/interpn.py
