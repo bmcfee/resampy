@@ -35,7 +35,7 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', parallel=True, *
         The resampling filter to use.
 
         By default, uses the `kaiser_best` (pre-computed filter).
-    
+
     parallel : optional, bool
         Enable/disable parallel computation exploiting multi-threading.
 
