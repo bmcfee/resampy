@@ -59,5 +59,5 @@ def _resample_f(x, y, t_out, interp_win, interp_delta, num_table, scale=1.0):
             weight = (interp_win[offset + k * index_step] + eta * interp_delta[offset + k * index_step])
             y[t] += weight * x[n + k + 1]
 
-resample_f_p = numba.jit(nopython=True, nogil=True, parallel=True, cache=True)(_resample_f)
-resample_f_s = numba.jit(nopython=True, nogil=True, parallel=False, cache=True)(_resample_f)
+resample_f_p = numba.jit(nopython=True, nogil=True, parallel=True)(_resample_f)
+resample_f_s = numba.jit(nopython=True, nogil=True, parallel=False)(_resample_f)
