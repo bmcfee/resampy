@@ -96,3 +96,33 @@ def test_resample_nu_quality_sweep(sr_orig, sr_new, fil, rms):
 
     err = np.mean(np.abs(y[:-1][idx] - y_pred[idx]))
     assert err <= rms, '{:g} > {:g}'.format(err, rms)
+
+
+@pytest.mark.parametrize('sr_orig,sr_new', [(44100, 22050), (22050, 44100)])
+def test_quality_sine_parallel(sr_orig, sr_new):
+    FREQ = 512.0
+    DURATION = 2.0
+    FILTER = 'sinc_window'
+    RTOL = 1e-13
+
+    x, _ = make_tone(FREQ, sr_orig, DURATION)
+    y_seq = resampy.resample(x, sr_orig, sr_new, filter=FILTER, parallel=False)
+    y_par = resampy.resample(x, sr_orig, sr_new, filter=FILTER, parallel=True)
+
+    np.testing.assert_allclose(y_seq, y_par, rtol=RTOL)
+ 
+
+@pytest.mark.parametrize('sr_orig,sr_new', [(44100, 22050), (22050, 44100)])
+def test_resample_nu_quality_sine_parallel(sr_orig, sr_new):
+    FREQ = 512.0
+    DURATION = 2.0
+    FILTER = 'sinc_window'
+    RTOL = 1e-13
+
+    x, _ = make_tone(FREQ, sr_orig, DURATION)
+    _, t_out = make_tone(FREQ, sr_new, DURATION)
+
+    y_seq = resampy.resample_nu(x, sr_orig, t_out[:-1], filter=FILTER, parallel=False)
+    y_par = resampy.resample_nu(x, sr_orig, t_out[:-1], filter=FILTER, parallel=True)
+
+    np.testing.assert_allclose(y_seq, y_par, rtol=RTOL)
