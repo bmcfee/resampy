@@ -146,26 +146,24 @@ if __name__ == "__main__":
 
     study.optimize(func, n_trials=params.n_trials, show_progress_bar=True)
 
-    print(params)
-    print(study.best_params)
-    print(study.best_value)
-
-    print(f'Parameters for {params.output_file}:')
-    print('-' * 40)
+    print(f"Parameters for {params.output_file}:")
+    print("-" * 40)
     print(f"\tbeta        = {study.best_params['beta']:g}")
     print(f"\troll        = {study.best_params['rolloff']:g}")
     print(f"\t# zeros     = {params.num_zeros}")
     print(f"\tprecision   = {params.precision}")
     print(f"\tattenuation = {params.attenuation}")
-    print('-' * 40)
+    print("-" * 40)
     print(f"Objective value: {study.best_value:g}")
 
-    window = functools.partial(scipy.signal.kaiser, beta=study.best_params['beta'])
+    window = functools.partial(scipy.signal.kaiser, beta=study.best_params["beta"])
     half_win, precision, roll = resampy.filters.sinc_window(
         num_zeros=params.num_zeros,
         precision=params.precision,
         window=window,
-        rolloff=study.best_params['rolloff'])
+        rolloff=study.best_params["rolloff"],
+    )
 
-    np.savez(params.output_file, half_win=half_win, precision=precision, rolloff=roll)
-
+    np.savez(
+        params.output_file, half_window=half_win, precision=precision, rolloff=roll
+    )

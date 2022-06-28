@@ -4,13 +4,29 @@
 --------------------------------
 
 `resampy` provides two pre-computed resampling filters which are tuned for either
-high-quality or fast calculation:
+high-quality or fast calculation.  These filters are constructed by the `create_filters.py`
+script.
 
-    - `kaiser_best` : 64 zero-crossings, a Kaiser window with beta=14.769656459379492,
-        and a roll-off frequency of Nyquist * 0.9475937167399596.
+    - `kaiser_best` :
+        > Parameters for kaiser_best:
+        >   ----------------------------------------
+        >       beta        = 12.9772
+        >       roll        = 0.917347
+        >       # zeros     = 50
+        >       precision   = 13
+        >       attenuation = -120.0
+        >   ----------------------------------------
 
-    - `kaiser_fast` : 16 zero-crossings, a Kaiser window with beta=8.555504641634386,
-        and a roll-off frequency of Nyquist * 0.85.
+    - `kaiser_fast` :
+        > Parameters for kaiser_fast:
+        > ----------------------------------------
+        >     beta        = 9.90102
+        >     roll        = 0.868206
+        >     # zeros     = 24
+        >     precision   = 9
+        >     attenuation = -93.0
+        > ----------------------------------------
+
 
 These filters can be used by calling `resample` as follows:
 
