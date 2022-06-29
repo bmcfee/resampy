@@ -117,7 +117,8 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', parallel=True, *
     interp_win, precision, _ = get_filter(filter, **kwargs)
 
     if sample_ratio < 1:
-        interp_win *= sample_ratio
+        # Make a copy to prevent modifying the filters in place
+        interp_win = sample_ratio * interp_win
 
     interp_delta = np.zeros_like(interp_win)
     interp_delta[:-1] = np.diff(interp_win)
@@ -205,7 +206,7 @@ def resample_nu(x, sr_orig, t_out, axis=-1, filter='kaiser_best', parallel=True,
 
     t_out = np.asarray(t_out)
     if t_out.ndim != 1:
-        raise ValueError('Invalide t_out shape ({}), 1D array expected'.format(t_out.shape))
+        raise ValueError('Invalid t_out shape ({}), 1D array expected'.format(t_out.shape))
     if np.min(t_out) < 0 or np.max(t_out) > (x.shape[axis] - 1) / sr_orig:
         raise ValueError('Output domain [{}, {}] exceeds the data domain [0, {}]'.format(
             np.min(t_out), np.max(t_out), (x.shape[axis] - 1) / sr_orig))
@@ -213,10 +214,6 @@ def resample_nu(x, sr_orig, t_out, axis=-1, filter='kaiser_best', parallel=True,
     # Set up the output shape
     shape = list(x.shape)
     shape[axis] = len(t_out)
-
-    if shape[axis] < 1:
-        raise ValueError('Input signal length={} is too small to '
-                         'resample from {}->{}'.format(x.shape[axis], x.shape[axis], len(t_out)))
 
     y = np.zeros_like(x, shape=shape)
 

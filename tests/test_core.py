@@ -43,6 +43,21 @@ def test_bad_sr(sr_orig, sr_new):
 
 
 @pytest.mark.xfail(raises=ValueError, strict=True)
+@pytest.mark.parametrize('sr', [0, -1])
+def test_bad_sr_nu(sr):
+    x = np.zeros(100)
+    t = np.arange(3)
+    resampy.resample_nu(x, sr, t)
+
+
+@pytest.mark.xfail(raises=ValueError, strict=True)
+@pytest.mark.parametrize('t', [np.empty(0), np.eye(3)])
+def test_bad_time_nu(t):
+    x = np.zeros(100)
+    resampy.resample_nu(x, 1, t)
+
+
+@pytest.mark.xfail(raises=ValueError, strict=True)
 @pytest.mark.parametrize('rolloff', [-1, 1.5])
 def test_bad_rolloff(rolloff):
     x = np.zeros(100)

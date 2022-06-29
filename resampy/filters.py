@@ -51,8 +51,9 @@ import pkg_resources
 import sys
 
 FILTER_FUNCTIONS = ['sinc_window']
+FILTER_CACHE = dict()
 
-__all__ = ['get_filter'] + FILTER_FUNCTIONS
+__all__ = ['get_filter', 'clear_cache'] + FILTER_FUNCTIONS
 
 
 def sinc_window(num_zeros=64, precision=9, window=None, rolloff=0.945):
@@ -201,9 +202,21 @@ def load_filter(filter_name):
         The roll-off frequency of the filter, as a fraction of Nyquist
     '''
 
-    fname = os.path.join('data',
-                         os.path.extsep.join([filter_name, 'npz']))
+    if filter_name not in FILTER_CACHE:
+        fname = os.path.join('data',
+                             os.path.extsep.join([filter_name, 'npz']))
 
-    data = np.load(pkg_resources.resource_filename(__name__, fname))
+        data = np.load(pkg_resources.resource_filename(__name__, fname))
+        FILTER_CACHE[filter_name] = data['half_window'], data['precision'], data['rolloff']
 
-    return data['half_window'], data['precision'], data['rolloff']
+    return FILTER_CACHE[filter_name]
+
+
+def clear_cache():
+    '''Clear the filter cache.
+
+    Calling this function will ensure that packaged filters are reloaded
+    upon the next usage.
+    '''
+
+    FILTER_CACHE.clear()
