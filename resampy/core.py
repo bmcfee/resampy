@@ -67,13 +67,13 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', parallel=True, *
     array([ 0.   ,  0.063, ..., -0.125, -0.063])
     >>> # Resample to 22050 with default parameters
     >>> resampy.resample(x, sr_orig, 22050)
-    array([ 0.011,  0.123,  0.249, ..., -0.366, -0.249, -0.123])
+    array([ 0.011,  0.122,  0.25 , ..., -0.366, -0.25 , -0.122])
     >>> # Resample using the fast (low-quality) filter
     >>> resampy.resample(x, sr_orig, 22050, filter='kaiser_fast')
-    array([ 0.013,  0.121,  0.251, ..., -0.366, -0.251, -0.121])
+    array([ 0.012,  0.121,  0.251, ..., -0.365, -0.251, -0.121])
     >>> # Resample using a high-quality filter
     >>> resampy.resample(x, sr_orig, 22050, filter='kaiser_best')
-    array([ 0.011,  0.123,  0.249, ..., -0.366, -0.249, -0.123])
+    array([ 0.011,  0.122,  0.25 , ..., -0.366, -0.25 , -0.122])
     >>> # Resample using a Hann-windowed sinc filter
     >>> import scipy.signal
     >>> resampy.resample(x, sr_orig, 22050, filter='sinc_window',
