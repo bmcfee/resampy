@@ -3,6 +3,7 @@ Changes
 
 v0.3.0
 ~~~~~~
+2022-06-29
 
 - `#99 <https://github.com/bmcfee/resampy/issues/99>`_ Enable caching of pre-computed filters to improve runtime efficiency.
 - `#98 <https://github.com/bmcfee/resampy/issues/98>`_ Automate pre-computed filter generation.  Regenerated and improved `kaiser_fast` and `kaiser_best` filters.
