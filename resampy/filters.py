@@ -10,7 +10,7 @@ script.
     - `kaiser_best` :
         > Parameters for kaiser_best:
         >   ----------------------------------------
-        >       beta        = 12.9772
+        >       beta        = 12.9846
         >       roll        = 0.917347
         >       # zeros     = 50
         >       precision   = 13
@@ -20,8 +20,8 @@ script.
     - `kaiser_fast` :
         > Parameters for kaiser_fast:
         > ----------------------------------------
-        >     beta        = 9.90102
-        >     roll        = 0.868206
+        >     beta        = 9.90322
+        >     roll        = 0.868212
         >     # zeros     = 24
         >     precision   = 9
         >     attenuation = -93.0

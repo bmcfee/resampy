@@ -133,7 +133,8 @@ if __name__ == "__main__":
 
     optuna.logging.set_verbosity(optuna.logging.WARNING)
 
-    study = optuna.create_study(direction="minimize")
+    sampler = optuna.samplers.TPESampler(seed=20220629)
+    study = optuna.create_study(direction="minimize", sampler=sampler)
 
     func = functools.partial(
         objective,
