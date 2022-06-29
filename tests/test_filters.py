@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 
+import numpy as np
 import scipy
 import pytest
 
@@ -39,3 +40,19 @@ def test_filter_load():
 @pytest.mark.xfail(raises=NotImplementedError, strict=True)
 def test_filter_missing():
     resampy.filters.get_filter('bad name')
+
+
+@pytest.mark.parametrize('sr1, sr2', [(1, 2), (2, 1)])
+def test_filter_cache_reset(sr1, sr2):
+    x = np.random.randn(100)
+    y1 = resampy.resample(x, sr1, sr2, filter='kaiser_fast')
+
+    assert len(resampy.filters.FILTER_CACHE) > 0
+
+    resampy.filters.clear_cache()
+
+    assert len(resampy.filters.FILTER_CACHE) == 0
+
+    y2 = resampy.resample(x, sr1, sr2, filter='kaiser_fast')
+
+    assert np.allclose(y1, y2)
