@@ -187,7 +187,6 @@ def get_filter(name_or_function, **kwargs):
 def load_filter(filter_name):
     '''Retrieve a pre-computed filter.
 
-    
     Parameters
     ----------
     filter_name : str

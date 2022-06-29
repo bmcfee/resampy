@@ -117,7 +117,8 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', parallel=True, *
     interp_win, precision, _ = get_filter(filter, **kwargs)
 
     if sample_ratio < 1:
-        interp_win *= sample_ratio
+        # Make a copy to prevent modifying the filters in place
+        interp_win = sample_ratio * interp_win
 
     interp_delta = np.zeros_like(interp_win)
     interp_delta[:-1] = np.diff(interp_win)
