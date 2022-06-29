@@ -43,4 +43,4 @@ jobs:
     - name: Test
       shell: bash -l {0}
       run: |
-        python -m pytest
+        python -m pytest tests
