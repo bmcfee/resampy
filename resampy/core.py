@@ -215,10 +215,6 @@ def resample_nu(x, sr_orig, t_out, axis=-1, filter='kaiser_best', parallel=True,
     shape = list(x.shape)
     shape[axis] = len(t_out)
 
-    if shape[axis] < 1:
-        raise ValueError('Input signal length={} is too small to '
-                         'resample from {}->{}'.format(x.shape[axis], x.shape[axis], len(t_out)))
-
     y = np.zeros_like(x, shape=shape)
 
     interp_win, precision, _ = get_filter(filter, **kwargs)
