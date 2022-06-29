@@ -88,7 +88,7 @@ def sinc_window(num_zeros=64, precision=9, window=None, rolloff=0.945):
 
     Examples
     --------
-    >>> import scipy
+    >>> import scipy, scipy.signal
     >>> import resampy
     >>> np.set_printoptions(threshold=5, suppress=False)
     >>> # A filter with 10 zero-crossings, 32 samples per crossing, and a
