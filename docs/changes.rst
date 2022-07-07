@@ -1,6 +1,12 @@
 Changes
 -------
 
+v0.3.1
+~~~~~~
+2022-07-07
+
+- `#104 <https://github.com/bmcfee/resampy/issues/104>`_ Fixed an efficiency regression introduced in the 0.3.0 release.
+
 v0.3.0
 ~~~~~~
 2022-06-29
