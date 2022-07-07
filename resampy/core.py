@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-'''Core resampling interface'''
+"""Core resampling interface"""
 
 import numpy as np
 
@@ -8,11 +8,13 @@ from .filters import get_filter
 
 from .interpn import resample_f_s, resample_f_p
 
-__all__ = ['resample', 'resample_nu']
+__all__ = ["resample", "resample_nu"]
 
 
-def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', parallel=True, **kwargs):
-    '''Resample a signal x from sr_orig to sr_new along a given axis.
+def resample(
+    x, sr_orig, sr_new, axis=-1, filter="kaiser_best", parallel=True, **kwargs
+):
+    """Resample a signal x from sr_orig to sr_new along a given axis.
 
     Parameters
     ----------
@@ -89,13 +91,13 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', parallel=True, *
     >>> y_stereo = resampy.resample(x_stereo, sr_orig, 22050, axis=1)
     >>> y_stereo.shape
     (2, 110250)
-    '''
+    """
 
     if sr_orig <= 0:
-        raise ValueError('Invalid sample rate: sr_orig={}'.format(sr_orig))
+        raise ValueError("Invalid sample rate: sr_orig={}".format(sr_orig))
 
     if sr_new <= 0:
-        raise ValueError('Invalid sample rate: sr_new={}'.format(sr_new))
+        raise ValueError("Invalid sample rate: sr_new={}".format(sr_new))
 
     if sr_orig == sr_new:
         # If the output rate matches, return a copy
@@ -108,8 +110,10 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', parallel=True, *
     shape[axis] = int(shape[axis] * sample_ratio)
 
     if shape[axis] < 1:
-        raise ValueError('Input signal length={} is too small to '
-                         'resample from {}->{}'.format(x.shape[axis], sr_orig, sr_new))
+        raise ValueError(
+            "Input signal length={} is too small to "
+            "resample from {}->{}".format(x.shape[axis], sr_orig, sr_new)
+        )
 
     # Preserve contiguity of input (if it exists)
     y = np.zeros_like(x, shape=shape)
@@ -120,25 +124,40 @@ def resample(x, sr_orig, sr_new, axis=-1, filter='kaiser_best', parallel=True, *
         # Make a copy to prevent modifying the filters in place
         interp_win = sample_ratio * interp_win
 
-    interp_delta = np.zeros_like(interp_win)
-    interp_delta[:-1] = np.diff(interp_win)
+    interp_delta = np.diff(interp_win, append=interp_win[-1])
 
     scale = min(1.0, sample_ratio)
-    time_increment = 1. / sample_ratio
+    time_increment = 1.0 / sample_ratio
     t_out = np.arange(shape[axis]) * time_increment
 
     if parallel:
-        resample_f_p(x.swapaxes(0, axis), y.swapaxes(0, axis),
-                     t_out, interp_win, interp_delta, precision, scale)
+        resample_f_p(
+            x.swapaxes(-1, axis),
+            t_out,
+            interp_win,
+            interp_delta,
+            precision,
+            scale,
+            y.swapaxes(-1, axis),
+        )
     else:
-        resample_f_s(x.swapaxes(0, axis), y.swapaxes(0, axis),
-                     t_out, interp_win, interp_delta, precision, scale)
+        resample_f_s(
+            x.swapaxes(-1, axis),
+            t_out,
+            interp_win,
+            interp_delta,
+            precision,
+            scale,
+            y.swapaxes(-1, axis),
+        )
 
     return y
 
 
-def resample_nu(x, sr_orig, t_out, axis=-1, filter='kaiser_best', parallel=True, **kwargs):
-    '''Interpolate a signal x at specified positions (t_out) along a given axis.
+def resample_nu(
+    x, sr_orig, t_out, axis=-1, filter="kaiser_best", parallel=True, **kwargs
+):
+    """Interpolate a signal x at specified positions (t_out) along a given axis.
 
     Parameters
     ----------
@@ -200,16 +219,21 @@ def resample_nu(x, sr_orig, t_out, axis=-1, filter='kaiser_best', parallel=True,
     >>> t_new = np.log2(1 + t)[::5] - t[0]
     >>> resampy.resample_nu(x, sr_orig, t_new)
     array([ 0.001,  0.427,  0.76 , ..., -0.3  , -0.372, -0.442])
-    '''
+    """
     if sr_orig <= 0:
-        raise ValueError('Invalid sample rate: sr_orig={}'.format(sr_orig))
+        raise ValueError("Invalid sample rate: sr_orig={}".format(sr_orig))
 
     t_out = np.asarray(t_out)
     if t_out.ndim != 1:
-        raise ValueError('Invalid t_out shape ({}), 1D array expected'.format(t_out.shape))
+        raise ValueError(
+            "Invalid t_out shape ({}), 1D array expected".format(t_out.shape)
+        )
     if np.min(t_out) < 0 or np.max(t_out) > (x.shape[axis] - 1) / sr_orig:
-        raise ValueError('Output domain [{}, {}] exceeds the data domain [0, {}]'.format(
-            np.min(t_out), np.max(t_out), (x.shape[axis] - 1) / sr_orig))
+        raise ValueError(
+            "Output domain [{}, {}] exceeds the data domain [0, {}]".format(
+                np.min(t_out), np.max(t_out), (x.shape[axis] - 1) / sr_orig
+            )
+        )
 
     # Set up the output shape
     shape = list(x.shape)
@@ -219,16 +243,31 @@ def resample_nu(x, sr_orig, t_out, axis=-1, filter='kaiser_best', parallel=True,
 
     interp_win, precision, _ = get_filter(filter, **kwargs)
 
-    interp_delta = np.zeros_like(interp_win)
-    interp_delta[:-1] = np.diff(interp_win)
+    interp_delta = np.diff(interp_win, append=interp_win[-1])
 
     # Normalize t_out
-    if sr_orig != 1.:
+    if sr_orig != 1.0:
         t_out = t_out * sr_orig
 
     if parallel:
-        resample_f_p(x.swapaxes(0, axis), y.swapaxes(0, axis), t_out, interp_win, interp_delta, precision)
+        resample_f_p(
+            x.swapaxes(-1, axis),
+            t_out,
+            interp_win,
+            interp_delta,
+            precision,
+            1.0,
+            y.swapaxes(-1, axis),
+        )
     else:
-        resample_f_s(x.swapaxes(0, axis), y.swapaxes(0, axis), t_out, interp_win, interp_delta, precision)
+        resample_f_s(
+            x.swapaxes(-1, axis),
+            t_out,
+            interp_win,
+            interp_delta,
+            precision,
+            1.0,
+            y.swapaxes(-1, axis),
+        )
 
     return y
