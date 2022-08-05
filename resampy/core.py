@@ -116,7 +116,12 @@ def resample(
         )
 
     # Preserve contiguity of input (if it exists)
-    y = np.zeros_like(x, shape=shape)
+    if np.issubdtype(x.dtype, np.integer):
+        dtype = np.float32
+    else:
+        dtype = x.dtype
+
+    y = np.zeros_like(x, dtype=dtype, shape=shape)
 
     interp_win, precision, _ = get_filter(filter, **kwargs)
 
@@ -239,7 +244,11 @@ def resample_nu(
     shape = list(x.shape)
     shape[axis] = len(t_out)
 
-    y = np.zeros_like(x, shape=shape)
+    if np.issubdtype(x.dtype, np.integer):
+        dtype = np.float32
+    else:
+        dtype = x.dtype
+    y = np.zeros_like(x, dtype=dtype, shape=shape)
 
     interp_win, precision, _ = get_filter(filter, **kwargs)
 

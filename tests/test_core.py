@@ -77,7 +77,7 @@ def test_bad_num_zeros():
 
 
 @pytest.mark.parametrize('dtype', [np.float32, np.float64,
-                                   np.int16, np.int32, np.int64])
+                                   np.complex64, np.complex128])
 def test_dtype(dtype):
     x = np.random.randn(100).astype(dtype)
 
@@ -86,8 +86,26 @@ def test_dtype(dtype):
     assert x.dtype == y.dtype
 
 
+@pytest.mark.parametrize('dtype', [np.int16, np.int32, np.int64])
+def test_dtype_int(dtype):
+    x = (32767 * np.random.randn(100)).astype(dtype)
+
+    y = resampy.resample(x, 100, 200)
+
+    assert y.dtype == np.float32
+
+
+@pytest.mark.parametrize('dtype', [np.int16, np.int32, np.int64])
+def test_dtype_int_nu(dtype):
+    x = (32767 * np.random.randn(100)).astype(dtype)
+    t = np.arange(2 * len(x) - 1) / 2
+
+    y = resampy.resample_nu(x, 1., t)
+    assert y.dtype == np.float32
+
+
 @pytest.mark.parametrize('dtype', [np.float32, np.float64,
-                                   np.int16, np.int32, np.int64])
+                                   np.complex64, np.complex128])
 def test_resample_nu_dtype(dtype):
     x = np.random.randn(100).astype(dtype)
     t = np.arange(2 * len(x) - 1) / 2
