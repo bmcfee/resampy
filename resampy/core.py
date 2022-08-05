@@ -12,7 +12,7 @@ __all__ = ["resample", "resample_nu"]
 
 
 def resample(
-    x, sr_orig, sr_new, axis=-1, filter="kaiser_best", parallel=True, **kwargs
+    x, sr_orig, sr_new, axis=-1, filter="kaiser_best", parallel=False, **kwargs
 ):
     """Resample a signal x from sr_orig to sr_new along a given axis.
 
@@ -116,7 +116,12 @@ def resample(
         )
 
     # Preserve contiguity of input (if it exists)
-    y = np.zeros_like(x, shape=shape)
+    if np.issubdtype(x.dtype, np.integer):
+        dtype = np.float32
+    else:
+        dtype = x.dtype
+
+    y = np.zeros_like(x, dtype=dtype, shape=shape)
 
     interp_win, precision, _ = get_filter(filter, **kwargs)
 
@@ -155,7 +160,7 @@ def resample(
 
 
 def resample_nu(
-    x, sr_orig, t_out, axis=-1, filter="kaiser_best", parallel=True, **kwargs
+    x, sr_orig, t_out, axis=-1, filter="kaiser_best", parallel=False, **kwargs
 ):
     """Interpolate a signal x at specified positions (t_out) along a given axis.
 
@@ -239,7 +244,11 @@ def resample_nu(
     shape = list(x.shape)
     shape[axis] = len(t_out)
 
-    y = np.zeros_like(x, shape=shape)
+    if np.issubdtype(x.dtype, np.integer):
+        dtype = np.float32
+    else:
+        dtype = x.dtype
+    y = np.zeros_like(x, dtype=dtype, shape=shape)
 
     interp_win, precision, _ = get_filter(filter, **kwargs)
 
