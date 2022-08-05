@@ -1,6 +1,13 @@
 Changes
 -------
 
+v0.4.0
+~~~~~~
+2022-08-05
+
+- `#109 <https://github.com/bmcfee/resampy/pull/109>`_ Reduced import time and switched to parallel=False by default.
+- `#109 <https://github.com/bmcfee/resampy/pull/109>`_ Integer-valued inputs now produce floating point outputs.
+
 v0.3.1
 ~~~~~~
 2022-07-07
