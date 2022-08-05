@@ -88,7 +88,7 @@ output array as demonstrated below.
     sr_orig = 22050
 
     # Create 5 seconds of random integer noise
-    x = np.random.randint(-32768, high=32767, size=5*sr, dtype=np.int16)
+    x = np.random.randint(-32768, high=32767, size=5*sr_orig, dtype=np.int16)
 
     # resample, y will be floating-point type
     y = resampy.resample(x, sr_orig, 11025)
