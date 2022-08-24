@@ -84,3 +84,13 @@ def resample_f_p(x, t_out, interp_win, interp_delta, num_table, scale, y):
 )
 def resample_f_s(x, t_out, interp_win, interp_delta, num_table, scale, y):
     _resample_loop_s(x, t_out, interp_win, interp_delta, num_table, scale, y)
+
+
+import sys
+if sys.maxsize < 2**32:
+    # 32 bit architecture
+    def resample_f_p(x, t_out, interp_win, interp_delta, num_table, scale, y):
+        import warnings
+        warnings.warn("The numba 'parallel' target is not currently supported on 32 bit hardware. "
+                      "Fallback to the sequential version.", stacklevel=2)
+        return resample_f_s(x, t_out, interp_win, interp_delta, num_table, scale, y)
