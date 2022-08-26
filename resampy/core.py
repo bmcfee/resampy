@@ -2,7 +2,9 @@
 # -*- encoding: utf-8 -*-
 """Core resampling interface"""
 
+import warnings
 import numpy as np
+import numba
 
 from .filters import get_filter
 
@@ -136,15 +138,30 @@ def resample(
     t_out = np.arange(shape[axis]) * time_increment
 
     if parallel:
-        resample_f_p(
-            x.swapaxes(-1, axis),
-            t_out,
-            interp_win,
-            interp_delta,
-            precision,
-            scale,
-            y.swapaxes(-1, axis),
-        )
+        try:
+            resample_f_p(
+                x.swapaxes(-1, axis),
+                t_out,
+                interp_win,
+                interp_delta,
+                precision,
+                scale,
+                y.swapaxes(-1, axis),
+            )
+        except numba.TypingError as exc:
+            warnings.warn(
+                f"{exc}\nFallback to the sequential version.",
+                stacklevel=2)
+
+            resample_f_s(
+                x.swapaxes(-1, axis),
+                t_out,
+                interp_win,
+                interp_delta,
+                precision,
+                scale,
+                y.swapaxes(-1, axis),
+            )
     else:
         resample_f_s(
             x.swapaxes(-1, axis),
@@ -259,15 +276,30 @@ def resample_nu(
         t_out = t_out * sr_orig
 
     if parallel:
-        resample_f_p(
-            x.swapaxes(-1, axis),
-            t_out,
-            interp_win,
-            interp_delta,
-            precision,
-            1.0,
-            y.swapaxes(-1, axis),
-        )
+        try:
+            resample_f_p(
+                x.swapaxes(-1, axis),
+                t_out,
+                interp_win,
+                interp_delta,
+                precision,
+                1.0,
+                y.swapaxes(-1, axis),
+            )
+        except numba.TypingError as exc:
+            warnings.warn(
+                f"{exc}\nFallback to the sequential version.",
+                stacklevel=2)
+
+            resample_f_s(
+                x.swapaxes(-1, axis),
+                t_out,
+                interp_win,
+                interp_delta,
+                precision,
+                1.0,
+                y.swapaxes(-1, axis),
+            )
     else:
         resample_f_s(
             x.swapaxes(-1, axis),
