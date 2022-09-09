@@ -27,14 +27,14 @@ For a quick introduction to using `resampy`, please refer to the `Examples`_ sec
 
 Installation
 ------------
-`resampy` can be installed from source through `pip`:
+`resampy` can be installed through `pip`:
 
 .. code-block:: bash
 
-    pip install resampy
+    python -m pip install resampy
 
 
-Conda users can install pre-compiled packages:
+Conda users can install via the following command:
 
 .. code-block:: bash
 
