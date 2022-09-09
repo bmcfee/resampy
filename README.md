@@ -18,12 +18,12 @@ This package implements the band-limited sinc interpolation method for sampling 
 
 # Installation
 
-`resampy` can be compiled from source via `pip` by saying:
+`resampy` can be installed `pip` by the following command:
 ```
-pip install resampy
+python -m pip install resampy
 ```
 
-Pre-built packages can be installed with `conda` by saying:
+It can also be installed by `conda` as follows:
 ```
 conda install -c conda-forge resampy
 ```
