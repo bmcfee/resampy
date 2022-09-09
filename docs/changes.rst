@@ -1,6 +1,13 @@
 Changes
 -------
 
+v0.4.1
+~~~~~~
+2022-09-09
+
+- `#113 <https://github.com/bmcfee/resampy/pull/113>`_ Fixed a rounding error in output buffer length calculations.
+- `#110 <https://github.com/bmcfee/resampy/pull/110>`_ Added a special case to disable unsupported parallel mode on 32bit architectures.
+
 v0.4.0
 ~~~~~~
 2022-08-05
