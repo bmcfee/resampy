@@ -207,3 +207,10 @@ def test_resample_axis():
 
     assert np.allclose(resampled_arr, np.transpose(resampled_t_arr))
     assert (resampled_arr**2).sum() > 0
+
+
+def test_resample_length_rounding():
+    # Test for length calculation edge case https://github.com/bmcfee/resampy/issues/111
+    x = np.zeros(12499)
+    y = resampy.resample(x, 12499, 15001)
+    assert len(y) == 15001

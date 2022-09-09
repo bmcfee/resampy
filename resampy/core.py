@@ -107,7 +107,9 @@ def resample(
 
     # Set up the output shape
     shape = list(x.shape)
-    shape[axis] = int(shape[axis] * sample_ratio)
+    # Explicitly recalculate length here instead of using sample_ratio
+    # This avoids a floating point round-off error identified as #111
+    shape[axis] = int(shape[axis] * sr_new / sr_orig)
 
     if shape[axis] < 1:
         raise ValueError(
