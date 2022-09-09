@@ -47,8 +47,7 @@ Advanced users and developers may wish to install from source by cloning the sou
 
     git clone https://github.com/bmcfee/resampy.git
     cd resampy
-    python setup.py build_ext -i
-    pip install -e .
+    python -m pip install -e .
 
 
 Running tests
@@ -59,9 +58,8 @@ executing the following commands from the source directory:
 
 .. code-block:: bash
 
-    pip install -e .[tests]
-    pip install pytest pytest-cov pytest-faulthandler
-    py.test --cov-report term-missing --cov resampy
+    python -m pip install -e .[tests]
+    pytest --cov-report term-missing --cov resampy
 
 
 Examples
