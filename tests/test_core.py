@@ -214,3 +214,13 @@ def test_resample_length_rounding():
     x = np.zeros(12499)
     y = resampy.resample(x, 12499, 15001)
     assert len(y) == 15001
+
+
+def test_resample_rates_fixedprecision():
+    # Test for avoiding ill effects of fixed-precision math
+    # This should fix a bug in librosa https://github.com/librosa/librosa/issues/1569
+
+    x = np.zeros(720200)
+    sr_out = np.int32(4000)
+    sr_in = 22050
+    resampy.resample(x, sr_in, sr_out)
