@@ -1,6 +1,13 @@
 Changes
 -------
 
+v0.4.2
+~~~~~~
+2022-09-13
+
+- `#115 <https://github.com/bmcfee/resampy/pull/115>`_ Fixed buffer length calculation to avoid
+  numerical overflow issues on some platforms.
+
 v0.4.1
 ~~~~~~
 2022-09-09
