@@ -43,7 +43,7 @@ def resample(
     parallel : optional, bool
         Enable/disable parallel computation exploiting multi-threading.
 
-        Default: True.
+        Default: False.
 
     **kwargs
         additional keyword arguments provided to the specified filter
