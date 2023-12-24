@@ -39,7 +39,7 @@ jobs:
       shell: bash -l {0}
       run: |
         mamba install typing_extensions!=4.2
-        mamba install pip numpy scipy numba pytest pytest-cov pytest-doctestplus
+        mamba install pip numpy scipy numba pytest pytest-cov pytest-doctestplus importlib_resources
     - name: Install
       shell: bash -l {0}
       run: |
