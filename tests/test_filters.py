@@ -9,7 +9,7 @@ import resampy
 
 
 @pytest.mark.parametrize('filt', ['sinc_window', resampy.filters.sinc_window])
-@pytest.mark.parametrize('window', [None, scipy.signal.hann])
+@pytest.mark.parametrize('window', [None, scipy.signal.windows.hann])
 @pytest.mark.parametrize('num_zeros', [None, 13])
 @pytest.mark.parametrize('precision', [None, 9])
 @pytest.mark.parametrize('rolloff', [None, 0.925])
