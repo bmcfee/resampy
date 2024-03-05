@@ -46,8 +46,14 @@ where ``**kwargs`` are additional parameters to `sinc_window`.
 '''
 
 import numpy as np
-import importlib_resources
 import sys
+
+if sys.version_info < (3, 9):
+    # Use the backport of importlib resources for old python
+    import importlib_resources
+else:
+    from importlib import resources as importlib_resources
+
 
 FILTER_FUNCTIONS = ['sinc_window']
 FILTER_CACHE = dict()

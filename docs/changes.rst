@@ -1,6 +1,12 @@
 Changes
 -------
 
+v0.4.3
+~~~~~~
+2024-03-05
+
+- `#117 <https://github.com/bmcree/resampy/pull/117>`_ Update to remove deprecated usage of pkg_resources.
+
 v0.4.2
 ~~~~~~
 2022-09-13

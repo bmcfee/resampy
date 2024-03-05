@@ -19,12 +19,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
+        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
         include:
           - os: windows-latest
-            python-version: "3.10"
+            python-version: "3.12"
           - os: macos-latest
-            python-version: "3.10"
+            python-version: "3.12"
 
     steps:
     - uses: actions/checkout@v2
@@ -39,7 +39,7 @@ jobs:
       shell: bash -l {0}
       run: |
         mamba install typing_extensions!=4.2
-        mamba install pip numpy scipy numba pytest pytest-cov pytest-doctestplus importlib_resources
+        mamba install pip numpy scipy numba pytest pytest-cov pytest-doctestplus
     - name: Install
       shell: bash -l {0}
       run: |
@@ -50,8 +50,9 @@ jobs:
         python -m pytest tests
         python -m pytest --doctest-only resampy
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v3
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         files: ./coverage.xml
         directory: ./coverage/reports/
         flags: unittests
