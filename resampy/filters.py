@@ -48,8 +48,7 @@ where ``**kwargs`` are additional parameters to `sinc_window`.
 import numpy as np
 import sys
 
-try:
-    # Try to import from the standard library first (Python >= 3.9)
+# Try to import from the standard library first (Python >= 3.9)
 if sys.version_info < (3, 9)
     from importlib import resources as importlib_resources
 else:
