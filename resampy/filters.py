@@ -46,8 +46,15 @@ where ``**kwargs`` are additional parameters to `sinc_window`.
 '''
 
 import numpy as np
-import importlib_resources
 import sys
+
+try:
+    # Try to import from the standard library first (Python >= 3.9)
+    from importlib import resources as importlib_resources
+except ImportError:
+    # Fall back to the backport
+    import importlib_resources
+
 
 FILTER_FUNCTIONS = ['sinc_window']
 FILTER_CACHE = dict()

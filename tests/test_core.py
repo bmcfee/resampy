@@ -141,7 +141,7 @@ def test_good_window():
     sr_orig = 100
     sr_new = 200
     x = np.random.randn(500)
-    y = resampy.resample(x, sr_orig, sr_new, filter='sinc_window', window=scipy.signal.blackman)
+    y = resampy.resample(x, sr_orig, sr_new, filter='sinc_window', window=scipy.signal.windows.blackman)
 
     assert len(y) == 2 * len(x)
 
