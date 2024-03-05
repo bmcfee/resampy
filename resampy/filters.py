@@ -48,12 +48,11 @@ where ``**kwargs`` are additional parameters to `sinc_window`.
 import numpy as np
 import sys
 
-# Try to import from the standard library first (Python >= 3.9)
 if sys.version_info < (3, 9):
-    from importlib import resources as importlib_resources
-else:
-    # Fall back to the backport
+    # Use the backport of importlib resources for old python
     import importlib_resources
+else:
+    from importlib import resources as importlib_resources
 
 
 FILTER_FUNCTIONS = ['sinc_window']
