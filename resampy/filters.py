@@ -46,8 +46,7 @@ where ``**kwargs`` are additional parameters to `sinc_window`.
 '''
 
 import numpy as np
-import os
-import pkg_resources
+import importlib_resources
 import sys
 
 FILTER_FUNCTIONS = ['sinc_window']
@@ -203,10 +202,10 @@ def load_filter(filter_name):
     '''
 
     if filter_name not in FILTER_CACHE:
-        fname = os.path.join('data',
-                             os.path.extsep.join([filter_name, 'npz']))
+        fname = importlib_resources.files("resampy") / 'data' / f'{filter_name}.npz'
+        with importlib_resources.as_file(fname) as f:
+            data = np.load(f)
 
-        data = np.load(pkg_resources.resource_filename(__name__, fname))
         FILTER_CACHE[filter_name] = data['half_window'], data['precision'], data['rolloff']
 
     return FILTER_CACHE[filter_name]
