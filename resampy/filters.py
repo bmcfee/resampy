@@ -202,7 +202,7 @@ def load_filter(filter_name):
     '''
 
     if filter_name not in FILTER_CACHE:
-        fname = importlib_resources.files(__name__) / 'data' / f'{filter_name}.npz'
+        fname = importlib_resources.files("resampy") / 'data' / f'{filter_name}.npz'
         with importlib_resources.as_file(fname) as f:
             data = np.load(f)
 
