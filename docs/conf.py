@@ -55,7 +55,10 @@ master_doc = 'index'
 project = u'resampy'
 copyright = u'2016, Brian McFee'
 
-import mock
+try:
+    from unittest import mock
+except ImportError:
+    import mock
 MOCK_MODULES = ['numpy', 'scipy', 'scipy.signal', 'resampy.interp', 'numba']
 sys.modules.update((mod_name, mock.Mock()) for mod_name in MOCK_MODULES)
 
