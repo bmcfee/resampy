@@ -81,7 +81,7 @@ def resample(
     >>> # Resample using a Hann-windowed sinc filter
     >>> import scipy.signal
     >>> resampy.resample(x, sr_orig, 22050, filter='sinc_window',
-    ...                  window=scipy.signal.hann)
+    ...                  window=scipy.signal.windows.hann)
     array([ 0.011,  0.123,  0.25 , ..., -0.366, -0.25 , -0.123])
 
     >>> # Generate stereo data

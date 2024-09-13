@@ -113,7 +113,7 @@ resampy allows you to control the design of the filters used in resampling opera
     x, sr_orig = librosa.load(librosa.ex('trumpet'), sr=None, mono=False)
 
     # Resample to 22050Hz using a Hann-windowed sinc-filter
-    y = resampy.resample(x, sr_orig, sr_new, filter='sinc_window', window=scipy.signal.hann)
+    y = resampy.resample(x, sr_orig, sr_new, filter='sinc_window', window=scipy.signal.windows.hann)
 
     # Or a shorter sinc-filter than the default (num_zeros=64)
     y = resampy.resample(x, sr_orig, sr_new, filter='sinc_window', num_zeros=32)

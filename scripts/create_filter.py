@@ -85,7 +85,7 @@ def parse_arguments(args):
 
 def get_window(beta=None, rolloff=None, num_zeros=None):
     """Build the full window from a specification"""
-    win = functools.partial(scipy.signal.kaiser, beta=beta)
+    win = functools.partial(scipy.signal.windows.kaiser, beta=beta)
     fil = resampy.filters.sinc_window(
         num_zeros=num_zeros, precision=1, window=win, rolloff=rolloff
     )[0]
@@ -157,7 +157,7 @@ if __name__ == "__main__":
     print("-" * 40)
     print(f"Objective value: {study.best_value:g}")
 
-    window = functools.partial(scipy.signal.kaiser, beta=study.best_params["beta"])
+    window = functools.partial(scipy.signal.windows.kaiser, beta=study.best_params["beta"])
     half_win, precision, roll = resampy.filters.sinc_window(
         num_zeros=params.num_zeros,
         precision=params.precision,
