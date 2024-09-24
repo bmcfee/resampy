@@ -100,7 +100,7 @@ def sinc_window(num_zeros=64, precision=9, window=None, rolloff=0.945):
     >>> # A filter with 10 zero-crossings, 32 samples per crossing, and a
     >>> # Hann window for tapering.
     >>> halfwin, prec, rolloff = resampy.filters.sinc_window(num_zeros=10, precision=5,
-    ...                                                      window=scipy.signal.hann)
+    ...                                                      window=scipy.signal.windows.hann)
     >>> halfwin
     array([  9.450e-01,   9.436e-01, ...,  -7.455e-07,  -0.000e+00])
     >>> prec
@@ -111,7 +111,7 @@ def sinc_window(num_zeros=64, precision=9, window=None, rolloff=0.945):
     >>> # Or using sinc-window filter construction directly in resample
     >>> y = resampy.resample(x, sr_orig, sr_new, filter='sinc_window',
     ...                      num_zeros=10, precision=5,
-    ...                      window=scipy.signal.hann)              # doctest: +SKIP
+    ...                      window=scipy.signal.windows.hann)      # doctest: +SKIP
     '''
 
     if window is None:
