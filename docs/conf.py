@@ -66,8 +66,10 @@ sys.modules.update((mod_name, mock.Mock()) for mod_name in MOCK_MODULES)
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
-import imp
-resampy_version = imp.load_source('resampy.version', '../resampy/version.py')
+import importlib.util
+spec = importlib.util.spec_from_file_location('resampy.version', '../resampy/version.py')
+resampy_version = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(resampy_version)
 
 # The short X.Y version.
 version = resampy_version.short_version
