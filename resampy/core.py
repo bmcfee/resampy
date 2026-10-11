@@ -192,7 +192,7 @@ def resample_nu(
         Sampling rate of the input signal (x).
 
     t_out : np.ndarray, dtype=np.float*
-        Position of the output samples.
+        Finite positions of the output samples within the input signal's domain.
 
     axis : int
         The target axis along which to resample `x`
@@ -217,6 +217,9 @@ def resample_nu(
 
     Raises
     ------
+    ValueError
+        if `sr_orig` is not positive, or if `t_out` is not a one-dimensional
+        array of finite positions within the input signal's domain.
     TypeError
         if the input signal `x` has an unsupported data type.
 
@@ -252,6 +255,8 @@ def resample_nu(
         raise ValueError(
             "Invalid t_out shape ({}), 1D array expected".format(t_out.shape)
         )
+    if not np.all(np.isfinite(t_out)):
+        raise ValueError("Output sample positions must be finite")
     if np.min(t_out) < 0 or np.max(t_out) > (x.shape[axis] - 1) / sr_orig:
         raise ValueError(
             "Output domain [{}, {}] exceeds the data domain [0, {}]".format(

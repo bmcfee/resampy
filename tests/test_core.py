@@ -57,6 +57,36 @@ def test_bad_time_nu(t):
     resampy.resample_nu(x, 1, t)
 
 
+@pytest.mark.parametrize('parallel', [False, True])
+@pytest.mark.parametrize('t', [
+    [np.nan],
+    [0, np.nan, 10],
+    [np.nan, 35],
+    [np.nan, -3],
+    [np.nan, np.inf],
+    [np.nan, -np.inf],
+    [np.inf],
+    [-np.inf],
+])
+def test_resample_nu_nonfinite_times(t, parallel):
+    x = np.sin(np.arange(32) / 3.0)
+    with pytest.raises(ValueError):
+        resampy.resample_nu(x, 1, t, parallel=parallel)
+
+
+@pytest.mark.parametrize('parallel', [False, True])
+@pytest.mark.parametrize('axis', [0, -1])
+def test_resample_nu_finite_times(axis, parallel):
+    x = np.stack([np.sin(np.arange(32) / 3.0), np.cos(np.arange(32) / 3.0)])
+    if axis == 0:
+        x = x.T
+    t = np.array([0, 5.5, 12.25, 31])
+    reference = resampy.resample_nu(x, 1, t, axis=axis, parallel=parallel)
+    indices = [3, 0, 2, 2, 1]
+    y = resampy.resample_nu(x, 1, t[indices], axis=axis, parallel=parallel)
+    np.testing.assert_array_equal(y, np.take(reference, indices, axis=axis))
+
+
 @pytest.mark.xfail(raises=ValueError, strict=True)
 @pytest.mark.parametrize('rolloff', [-1, 1.5])
 def test_bad_rolloff(rolloff):
